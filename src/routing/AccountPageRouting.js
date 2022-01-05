@@ -10,7 +10,6 @@ const AccountPageRouting = ({ navigation, route }) => {
   return (
     <React.Fragment key="AccountPageNavigate">
       <Stack.Navigator
-        mode="modal"
         screenOptions={{
           headerShown: false,
         }}

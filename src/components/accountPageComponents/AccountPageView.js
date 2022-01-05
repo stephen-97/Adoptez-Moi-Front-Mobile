@@ -51,6 +51,7 @@ const AccountPageView = (props) => {
   useEffect(() => {
     setToggled(false);
     setToggledEmail(false);
+    console.log(props)
     refreshToken(props);
   }, [isVisible]);
 

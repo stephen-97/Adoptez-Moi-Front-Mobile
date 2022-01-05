@@ -24,21 +24,35 @@ const AnimalList2 = (props) => {
   const scrollRef = useRef();
   const [lastPage, setLastPage] = useState(1);
 
-  const getData = () => {
+  const formDataBuild = () => {
     const formData = new FormData();
     formData.append("nbitemsPorPage", itemsPorPage);
     formData.append("currentPage", currentPage);
-    formData.append("specie", props.FilterData.espece);
-    formData.append("sex", props.FilterData.sexe);
-    formData.append("price", props.FilterData.price);
-    formData.append("departmen", props.FilterData.department);
+    if (props.FilterData.order) {
+      formData.append("order", props.FilterData.order);
+    }
+    if (props.FilterData.sex) {
+      formData.append("sex", props.FilterData.sex);
+    }
+    if (props.FilterData.department) {
+      formData.append("department", props.FilterData.department);
+    }
+    if (props.FilterData.specie) {
+      for (let i = 0; i < props.FilterData.specie.length; i++) {
+        formData.append(`specie[${i}]`, props.FilterData.specie[i]);
+      }
+    }
+    return formData;
+  };
+
+  const getData = () => {
     return fetch(`http://${SERVER.NAME}/wanted/page/`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: formData,
+      body: formDataBuild(),
     })
       .then((response) => response.json())
       .then((jsonData) => {
@@ -196,83 +210,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-/**
- * <TouchableOpacity
-          onPress={() => onPressPrev()}
-          style={
-            stylePressPrev()
-              ? styles.Button_prev
-              : styles.Button_prev_untouchable
-          }
-        >
-          <Text style={styles.button_text}>Précédent</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => onPressNext()}
-          style={
-            stylePressNext()
-              ? styles.Button_next
-              : styles.Button_next_untouchable
-          }
-        >
-          <Text style={styles.button_text}>Suivant</Text>
-        </TouchableOpacity>
- */
-/**
- * <ScrollView
-        ref={ref => this.containerRef = ref}
-        style={styles.container}
-      >
-        <View style={styles.pageList}>
-          <Text>{this.state.newDataAfterFilter} avis trouvés</Text>
-          {this.fetchProduct().map((elem, index) =>
-            this.renderItem(index, this.fetchProduct())
-          )}
-        </View>
-
-        <View style={styles.button_container}>
-          <TouchableOpacity
-            onPress={this.onPressPrevious}
-            style={
-              this.CanPressPrev()
-                ? styles.Button_prev
-                : styles.Button_prev_untouchable
-            }
-          >
-            <Text style={styles.button_text}>Précédent</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={this.onPressNext}
-            style={
-              this.CanPressNext()
-                ? styles.Button_next
-                : styles.Button_next_untouchable
-            }
-          >
-            <Text style={styles.button_text}>Suivant</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-
-
-
-
-      <React.Fragment key={key}>
-        <Animal
-          navigation={this.props.navigation}
-          image={images.dog1}
-          data={AnimalData[key]}
-        ></Animal>
-        <View
-          style={{
-            borderWidth: 0.5,
-            width: "100%",
-            borderColor: "#00000050",
-          }}
-        ></View>
-      </React.Fragment>
- */
-
 export default connect(mapStateToProps)(AnimalList2);
 
 const styles = StyleSheet.create({
@@ -282,7 +219,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     width: "100%",
     height: "100%",
-    backgroundColor: "white",
     overflow: "scroll",
   },
   pageList: {

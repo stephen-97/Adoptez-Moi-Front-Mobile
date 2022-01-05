@@ -2,6 +2,7 @@ import React from "react";
 import { TouchableOpacity, View, Text, StyleSheet, Image } from "react-native";
 import { images, COLORS } from "../../constants";
 import SERVER from "../../../config";
+import { convertDate } from "../utility/functions";
 
 const Animal = (props) => {
   return (
@@ -29,11 +30,12 @@ const Animal = (props) => {
         <View style={style.other_info_container}>
           <View>
             <Text style={style.info}>{props.data.name}</Text>
-            <Text style={style.info}>{props.data.age} ans</Text>
+            <Text style={style.info}>{props.data.age}</Text>
             <Text style={style.info}>{props.data.price} €</Text>
             <Text style={style.info}>{props.data.sex}</Text>
           </View>
         </View>
+        <Text style={style.date}>{convertDate(props.data.created_at)}</Text>
       </TouchableOpacity>
     </React.Fragment>
   );
@@ -55,6 +57,12 @@ const style = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
     marginVertical: 3,
+  },
+  date: {
+    position: "absolute",
+    color: COLORS.darkgray,
+    left: 37,
+    bottom: 10,
   },
   age: {
     color: "black",

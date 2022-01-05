@@ -4,7 +4,10 @@ import { COLORS, SIZES } from "../../constants";
 
 const MiniButton = (props) => {
   return (
-    <TouchableOpacity onPress={props.onPress} style={[styles.button, props.extraStyle]}>
+    <TouchableOpacity
+      onPress={props.onPress}
+      style={[styles.button, props.extraStyle]}
+    >
       <Text style={styles.textButton}>{props.name}</Text>
     </TouchableOpacity>
   );

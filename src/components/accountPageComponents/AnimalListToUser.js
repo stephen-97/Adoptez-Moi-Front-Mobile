@@ -21,19 +21,16 @@ const AnimalListToUser = (props) => {
   const sendData = () => {
     const formData = new FormData();
     return fetch(`http://${SERVER.NAME}/wanted/user/`, {
-      method: "DELETE",
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Authorization": props.AuthProps.token,
+        Authorization: props.AuthProps.token,
       },
-      body: formData,
     })
       .then((response) => response.json())
       .then((jsonData) => {
-        if (jsonData.length !== 0) {
-          setData(jsonData);
-        }
+        setData(jsonData);
         if (jsonData.status === 200) {
           props.toggled(false);
         }
@@ -52,9 +49,9 @@ const AnimalListToUser = (props) => {
           <Text style={styles.textNoAnnonce}>Pas d'annonces postés</Text>
         </View>
       ) : null}
-      {data.map((elem) => (
+      {data.map((elem, i) => (
         <>
-          <View style={styles.container}>
+          <View style={styles.container} key={i}>
             <Image
               style={styles.image}
               source={{

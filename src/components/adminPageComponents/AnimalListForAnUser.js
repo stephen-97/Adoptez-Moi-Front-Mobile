@@ -35,7 +35,7 @@ const AnimalListForAnUser = (props) => {
 
   return (
     <>
-      {props.data.animals.length === 0 ? (
+      {dataResponse.length === 0 ? (
         <View style={styles.container}>
           <Text style={styles.textNoAnnonce}>Pas d'annonces postés</Text>
         </View>

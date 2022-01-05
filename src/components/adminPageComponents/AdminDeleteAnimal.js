@@ -42,7 +42,6 @@ const AnimalDeleteAnimal = (props) => {
 
 
   const deleteUserAnimal = () => {
-    console.log("message");
     setIsLoading(true);
     return fetch(
       `http://${SERVER.NAME}/admin/animalDelete/${props.route.params.data.id}/${message}`,
@@ -57,7 +56,6 @@ const AnimalDeleteAnimal = (props) => {
     )
       .then((response) => response.json())
       .then((jsonData) => {
-        console.log(jsonData);
         setDataResponse(jsonData);
         setIsLoading(false);
         if (jsonData.status !== 400) {
@@ -191,7 +189,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: COLORS.tertiary,
-    marginLeft: 15,
+    textAlign: "center",
     marginTop: 15,
     fontSize: SIZES.h4,
   },

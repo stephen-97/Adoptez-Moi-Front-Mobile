@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, ScrollView } from "react-native";
-import { COLORS, SIZES } from "../../constants";
+import { SIZES } from "../../constants";
 import Line from "../utility/Line";
 import Button from "../utility/Button";
 
@@ -46,7 +46,9 @@ const AnimalInfo = (props) => {
             <Text style={styles.title}>Race</Text>
           </View>
           <View style={styles.valueContainer}>
-            <Text style={styles.valueResponse}>{props.data.race}</Text>
+            <Text style={styles.valueResponse}>
+              {props.data.race !== "" ? props.data.race : `(Non précisé)`}
+            </Text>
           </View>
         </View>
 
@@ -79,14 +81,16 @@ const AnimalInfo = (props) => {
             <Text style={styles.title}>Informations</Text>
           </View>
           <View style={styles.valueTextAreaContainer}>
-            <Text style={styles.valueTextAreaResponse}>{props.data.description}</Text>
+            <Text style={styles.valueTextAreaResponse}>
+              {props.data.description}
+            </Text>
           </View>
         </View>
 
         <Line color="rgba(0,0,0,0.3)" />
 
         <View style={styles.buttonView}>
-          <Button name="Voir localisation" onPress={() => alert("hey")} />
+          <Button name="Voir localisation" onPress={() => null} />
         </View>
       </ScrollView>
     </>

@@ -57,11 +57,12 @@ export const refreshToken = (props) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      "Authorization": props.AuthProps.token,
+      Authorization: props.AuthProps.token,
     },
   })
     .then((response) => response.json())
     .then((jsonData) => {
+      console.log(jsonData!==false);
       if (jsonData.status !== false) {
         changeStoreAuth(jsonData);
       } else {

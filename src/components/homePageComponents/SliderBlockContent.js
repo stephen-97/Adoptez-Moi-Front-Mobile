@@ -7,7 +7,6 @@ import {
   Dimensions,
   Image,
   TouchableOpacity,
-  TouchableHighlight,
 } from "react-native";
 import { COLORS, SIZES } from "../../constants";
 

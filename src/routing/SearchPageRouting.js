@@ -32,22 +32,16 @@ const SearchPageRouting = ({ navigation, route }) => {
             cardStyle: { backgroundColor: "transparent" },
           }}
         />
-        <Stack.Group
-          screenOptions={{
-            presentation: "transparentModal",
+        <Stack.Screen
+          headerMode="none"
+          name="AnimalFilter"
+          component={Filter2}
+          options={{
+            headerShown: false,
+            animationEnabled: true,
+            cardStyle: { backgroundColor: "transparent" },
           }}
-        >
-          <Stack.Screen
-            headerMode="none"
-            name="AnimalFilter"
-            component={Filter2}
-            options={{
-              headerShown: false,
-              animationEnabled: false,
-              cardStyle: { backgroundColor: "transparent" },
-            }}
-          />
-        </Stack.Group>
+        />
       </Stack.Navigator>
     </React.Fragment>
   );

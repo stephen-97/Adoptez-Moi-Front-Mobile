@@ -11,7 +11,7 @@ const SearchPage = ({ navigation }) => {
       <HeaderNav name="Recherche"></HeaderNav>
       <View style={{ backgroundColor: "white" }}>
         <ToggleFilter navigation={navigation}></ToggleFilter>
-        <ScrollView>
+        <ScrollView style={{ height: "100%" }}>
           <AnimalList2 navigation={navigation}></AnimalList2>
         </ScrollView>
       </View>

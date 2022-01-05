@@ -14,6 +14,8 @@ import { convertDate, convertDBDate } from "../utility/functions";
 import AnimalListForAnUser from "./AnimalListForAnUser";
 
 const SelectedUserInfoView = (props) => {
+
+
   let data = props.route.params.data;
   return (
     <>
@@ -21,6 +23,7 @@ const SelectedUserInfoView = (props) => {
         <TouchableOpacity onPress={() => props.navigation.goBack(null)}>
           <Image style={styles.image} source={icons.arrowFwd} />
         </TouchableOpacity>
+        <Text style={styles.titleHeader}>{data.username}</Text>
       </View>
       <ScrollView style={styles.container}>
         <View style={styles.block}>
@@ -93,6 +96,15 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     marginTop: 120,
+  },
+  titleHeader: {
+    fontSize: SIZES.h1,
+    fontWeight: "bold",
+    color: "gray",
+    textAlign: "center",
+    position: "absolute",
+    width: "100%",
+    top: 55,
   },
   image: {
     height: 50,

@@ -1,5 +1,4 @@
-import React, { useEffect, useState} from "react";
-import * as SecureStore from "expo-secure-store";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import {
@@ -10,40 +9,48 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SERVER from "../../../config";
-import { COLORS, SIZES, images } from "../../constants";
+import { COLORS, SIZES } from "../../constants";
 import Line from "../utility/Line";
 import SliderBlockContent from "./SliderBlockContent";
+import FirsSliderBlockContent from "./FirsSliderBlockContent";
 
 const { width, height } = Dimensions.get("window");
 
 const HomePageView = (props) => {
+  const dataAnimalGroup = ["chien", "chat", "volatile", "reptile", "autre"];
+  const dataColor = ["#9193d4", "#dbb69d", "#77cdca", "#77d199", "#e7ab61"];
+  const dataColor2 = ["#b2b4e7", "#e6c1a8", "#a0e0de", "#98e0b3", "#e8d4bb"];
   const scrollX = new Animated.Value(0);
   const position = Animated.divide(scrollX, width);
   const [data, setDataResponse] = useState([]);
+  const [speciesData, setSpeciesData] = useState({
+    chien: 0,
+    chat: 0,
+    volatile: 0,
+    reptile: 0,
+    autres: 0,
+  });
 
-  async function save(key, value) {
-    try {
-      await SecureStore.setItemAsync(key, value);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  function getValueFor(key) {
-    const result = SecureStore.getItemAsync(key);
-    if (result) {
-      console.log("🔐 Here's your value 🔐 \n" + Object.values(result));
-    } else {
-      console.log('No values stored under that key.');
-    }
-  }
+  const getSpeciesData = () => {
+    fetch(`http://${SERVER.NAME}/statistics/species/count`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((jsonData) => {
+        setSpeciesData(jsonData);
+      });
+  };
 
   const sendData = () => {
     const formData = new FormData();
     formData.append("numberOfAnimal", 5);
-    return fetch(`http://${SERVER.NAME}/wanted/sliderHomePage/`, {
+    fetch(`http://${SERVER.NAME}/wanted/sliderHomePage/`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -64,60 +71,102 @@ const HomePageView = (props) => {
   const isVisible = useIsFocused();
   useEffect(() => {
     sendData();
+    getSpeciesData();
   }, [isVisible]);
 
   return (
     <View style={styles.container}>
-      {data.length === 0 ? (
-        <Text style={styles.titreCarrousel}>Pas encore d'annonces disponibles </Text>
-      ) : (
-      <Text style={styles.titreCarrousel}>Dernières annonces </Text>
-      )}
-      <FlatList
-        ref={(ref) => (flatListRef = ref)}
-        data={data}
-        keyExtractor={(item, index) => "key" + index}
-        horizontal
-        pagingEnabled
-        scrollEnabled
-        snapToAlignment="center"
-        scrollEventThrottle={16}
-        decelerationRate="fast"
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => {
-          return (
-            <>
-              <SliderBlockContent
-                navigation={props.navigation}
-                data={item}
-                picture={{
-                  uri: `http://${SERVER.NAME}/upload/${item.images[0].name}`
-                }}
-                nom={item.name}
-                espece={item.species}
-                department={item.department}
-              />
-            </>
-          );
-        }}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          {
-            useNativeDriver: false,
-          }
+      <View style={styles.miniContainer}>
+        <Text style={[styles.titreCarrousel]}>Animaux </Text>
+        <FlatList
+          data={dataAnimalGroup}
+          keyExtractor={(item, index) => "key" + index}
+          horizontal
+          pagingEnabled
+          scrollEnabled
+          snapToAlignment="center"
+          scrollEventThrottle={16}
+          decelerationRate="fast"
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item, index}) => {
+            return (
+              <View>
+                <FirsSliderBlockContent
+                  index={index}
+                  navigation={props.navigation}
+                  picture={`icons.animalType${index + 1}`}
+                  count={speciesData[item]}
+                  color={dataColor[index]}
+                  color2={dataColor2[index]}
+                  species={dataAnimalGroup[index]}
+                />
+                <Text style={styles.animalGroupTitle}>{item}</Text>
+              </View>
+            );
+          }}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            {
+              useNativeDriver: false,
+            }
+          )}
+        />
+      </View>
+      <View style={styles.miniContainer}>
+        {data.length === 0 ? (
+          <Text style={styles.titreCarrousel}>Pas encore d'annonces disponibles </Text>
+        ) : (
+          <Text style={styles.titreCarrousel}>Dernières annonces </Text>
         )}
-      />
-      <View style={styles.logoView}>
-        {data.map((_, key) => {
-          const opacity = position.interpolate({
-            inputRange: [key - 1, key, key + 1],
-            outputRange: [0.3, 1, 0.3],
-            extrapolate: "clamp",
-          });
-          return (
-            <Animated.View key={key} style={[styles.itemsLogo, { opacity }]} />
-          );
-        })}
+        <FlatList
+          ref={(ref) => (flatListRef = ref)}
+          data={data}
+          keyExtractor={(item, index) => "key" + index}
+          horizontal
+          pagingEnabled
+          scrollEnabled
+          snapToAlignment="center"
+          scrollEventThrottle={16}
+          decelerationRate="fast"
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => {
+            return (
+              <>
+                <SliderBlockContent
+                  navigation={props.navigation}
+                  data={item}
+                  picture={{
+                    uri: `http://${SERVER.NAME}/upload/${item.images[0].name}`
+                  }}
+                  nom={item.name}
+                  espece={item.species}
+                  department={item.department}
+                />
+              </>
+            );
+          }}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            {
+              useNativeDriver: false,
+            }
+          )}
+        />
+        <View style={styles.logoView}>
+          {data.map((_, key) => {
+            const opacity = position.interpolate({
+              inputRange: [key - 1, key, key + 1],
+              outputRange: [0.3, 1, 0.3],
+              extrapolate: "clamp",
+            });
+            return (
+              <Animated.View
+                key={key}
+                style={[styles.itemsLogo, { opacity }]}
+              />
+            );
+          })}
+        </View>
       </View>
       <Line color={COLORS.lightGray} />
       {props.AuthProps.token ? (
@@ -142,13 +191,17 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(HomePageView);
 
 const styles = StyleSheet.create({
-  container: {
+  miniContainer: {
     alignItems: "center",
     justifyContent: "center",
+    marginVertical: 15,
   },
   titreCarrousel: {
     fontSize: SIZES.h2,
     paddingVertical: 10,
+    width: "100%",
+    marginLeft: 30,
+    fontWeight: "bold",
   },
   logoView: {
     flexDirection: "row",
@@ -178,4 +231,10 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h2,
     color: "white",
   },
+  animalGroupTitle: {
+    left: 20,
+    color: COLORS.darkgray,
+    fontWeight: "bold",
+    fontSize: 15,
+  }
 });

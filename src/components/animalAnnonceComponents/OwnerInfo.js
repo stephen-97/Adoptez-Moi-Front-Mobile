@@ -59,7 +59,7 @@ const OwnerInfo = (props) => {
           <Text style={styles.valueResponse}>
             {props.data.phone_number !== ""
               ? props.data.phone_number
-              : "Non renségnié"}
+              : "(Non renségnié)"}
           </Text>
         </View>
       </View>

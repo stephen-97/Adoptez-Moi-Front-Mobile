@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import { Picker } from "@react-native-picker/picker";
-
 import {
   StyleSheet,
   Text,
@@ -14,14 +13,14 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import SERVER from "../../../config";
-import { COLORS, SIZES, icons, departements } from "../../constants";
+import { COLORS, SIZES, departements } from "../../constants";
 import Line from "../utility/Line";
 import MiniButton from "../utility/MiniButton";
 import { tokenDecode } from "../utility/functions";
-import * as ImagePicker from "expo-image-picker";
-import LoaderSpinner from "../utility/LoaderSpinner";
 
+import LoaderSpinner from "../utility/LoaderSpinner";
 
 if (
   Platform.OS === "android" &&
@@ -49,6 +48,7 @@ const AnimalFormView = (props) => {
   //variables
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
+  const [ageMonthOrYear, setAgeMonthOrYear] = useState("mois");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [sex, setSex] = useState("Femelle");
@@ -68,14 +68,16 @@ const AnimalFormView = (props) => {
 
   const handleChoosePhoto = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      //mediaTypes: ImagePicker.MediaTypeOptions.All,
       base64: true,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
     if (!result.cancelled) {
-      setImage({uri : result.uri, data: result.base64});
+      setImage({
+        uri: result.uri,
+        data: result.base64,
+      });
     }
   };
 
@@ -140,10 +142,15 @@ const AnimalFormView = (props) => {
     if (verification()) {
       setLoading(true);
       setResultData(true);
+      let completeAge = age;
+      if (age !== "") {
+        completeAge = `${age} ${ageMonthOrYear}`;
+      }
       const formData = new FormData();
       formData.append("name", name);
       formData.append("price", price);
       formData.append("sex", sex);
+      formData.append("age", completeAge);
       formData.append("specie", specie);
       formData.append("race", race);
       formData.append("description", description);
@@ -155,16 +162,16 @@ const AnimalFormView = (props) => {
         headers: {
           Accept: "application/json",
           "Content-Type": "multipart/form-data",
-          "Authorization": props.AuthProps.token,
+          Authorization: props.AuthProps.token,
         },
         body: formData,
       })
         .then((response) => response.text())
         .then((jsonData) => {
           setLoading(false);
-          console.log(jsonData);
         });
     }
+    return null;
   };
 
   const isVisible = useIsFocused();
@@ -180,6 +187,7 @@ const AnimalFormView = (props) => {
     })();
     setName("");
     setAge("");
+    setAgeMonthOrYear("mois");
     setPrice("");
     setDescription("");
     setSpecie("Chien");
@@ -205,7 +213,9 @@ const AnimalFormView = (props) => {
                   <TextInput
                     placeholder="Nom"
                     style={
-                      !nameError ? styles.textInput : styles.textInputIncorrect
+                      !nameError
+                        ? styles.textInput
+                        : [styles.textInput, { borderColor: "red" }]
                     }
                     autoCapitalize="none"
                     onChangeText={(e) => setName(e)}
@@ -220,16 +230,29 @@ const AnimalFormView = (props) => {
   
                 <View style={styles.inputBlock}>
                   <Text style={styles.inputTitle}>Age</Text>
-                  <TextInput
-                    placeholder="Age"
-                    style={
-                      !ageError ? styles.textInput : styles.textInputIncorrect
-                    }
-                    autoCapitalize="none"
-                    onChangeText={(e) => setAge(e)}
-                    onFocus={() => setAgeError(false)}
-                    defaultValue={age}
-                  />
+                  <View style={styles.ageBlock}>
+                    <TextInput
+                      placeholder="Age"
+                      style={
+                        !ageError
+                          ? styles.textInputAge
+                          : [styles.textInputAge, { borderColor: "red" }]
+                      }
+                      autoCapitalize="none"
+                      onChangeText={(e) => setAge(e)}
+                      onFocus={() => setAgeError(false)}
+                      defaultValue={age}
+                    />
+                    <Picker
+                      style={styles.pickerAge}
+                      itemStyle={styles.pickerItemAge}
+                      selectedValue={ageMonthOrYear}
+                      onValueChange={(e) => setAgeMonthOrYear(e)}
+                    >
+                      <Picker.Item label="mois" value="mois" />
+                      <Picker.Item label="ans" value="ans" />
+                    </Picker>
+                  </View>
                 </View>
   
                 <View style={{ marginVertical: 15 }}>
@@ -241,9 +264,12 @@ const AnimalFormView = (props) => {
                   <TextInput
                     placeholder="En euro, si l'animal n'est pas à vendre mettez 0"
                     style={
-                      !priceError ? styles.textInput : styles.textInputIncorrect
+                      !priceError
+                        ? styles.textInput
+                        : [styles.textInput, { borderColor: "red" }]
                     }
                     autoCapitalize="none"
+                    onFocus={() => setPriceError(false)}
                     onChangeText={(e) => setPrice(e)}
                     defaultValue={price}
                   />
@@ -263,7 +289,7 @@ const AnimalFormView = (props) => {
                     style={
                       !descriptionError
                         ? styles.textAreaInput
-                        : styles.textAreaInputIncorrect
+                        : [styles.textAreaInput, { borderColor: "red" }]
                     }
                     autoCapitalize="none"
                     onChangeText={(e) => setDescription(e)}
@@ -350,7 +376,9 @@ const AnimalFormView = (props) => {
                   <TextInput
                     placeholder="numéro de téléphone"
                     style={
-                      !phoneError ? styles.textInput : styles.textInputIncorrect
+                      !phoneError
+                        ? styles.textInput
+                        : [styles.textInput, { borderColor: "red" }]
                     }
                     autoCapitalize="none"
                     onChangeText={(e) => setPhoneNumber(e)}
@@ -372,7 +400,9 @@ const AnimalFormView = (props) => {
                   />
                 </View>
                 {image ? (
-                  <Image style={styles.imagePicker} source={{ uri: "data:image/png;base64," + image.data }} />
+                  <Image
+                    style={styles.imagePicker}
+                    source={{ uri: "data:image/png;base64," + image.data }}/>
                 ) : null}
                 <View style={{ marginVertical: 15 }}>
                   <Line color="rgba(255,255,255,255.3)" />
@@ -392,8 +422,10 @@ const AnimalFormView = (props) => {
                 {loading ? (
                   <LoaderSpinner />
                 ) : (
-                  <View style={{justifyContent: "center"}}>
-                    <Text style={styles.resultText}>Votre annonce a bien été enregistré!</Text>
+                  <View style={{ justifyContent: "center" }}>
+                    <Text style={styles.resultText}>
+                      Votre annonce a bien été enregistré!
+                    </Text>
                   </View>
                 )}
               </View>
@@ -455,16 +487,18 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: "white",
   },
-  textButtonForm: {
-    fontSize: SIZES.h2,
-    color: "white",
-  },
-  textInputIncorrect: {
+  textInputAge: {
     padding: 15,
-    borderColor: "red",
+    borderColor: "white",
     borderWidth: 1,
     borderRadius: 50,
     backgroundColor: "white",
+    flex: 1,
+    marginHorizontal: 10,
+  },
+  textButtonForm: {
+    fontSize: SIZES.h2,
+    color: "white",
   },
   textAreaInput: {
     padding: 20,
@@ -474,17 +508,12 @@ const styles = StyleSheet.create({
     height: 200,
     backgroundColor: "white",
   },
-  textAreaInputIncorrect: {
-    padding: 20,
-    borderColor: "red",
-    borderWidth: 1,
-    borderRadius: 20,
-    height: 200,
-    backgroundColor: "white",
-  },
   inputBlock: {
     padding: 5,
     paddingHorizontal: 10,
+  },
+  ageBlock: {
+    flexDirection: "row",
   },
   inputTitle: {
     marginLeft: 10,
@@ -497,8 +526,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 30,
   },
+  pickerAge: {
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 30,
+    marginHorizontal: 15,
+    flex: 1,
+  },
   pickerItem: {
     height: 150,
+    fontSize: 20,
+  },
+  pickerItemAge: {
+    height: 50,
     fontSize: 20,
   },
   imagePicker: {

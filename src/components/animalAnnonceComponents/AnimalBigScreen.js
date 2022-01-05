@@ -7,16 +7,16 @@ import {
   Image,
   Dimensions,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
 import { tokenDecode } from "../utility/functions";
-import { COLORS, SIZES } from "../../constants";
+import { COLORS, icons, SIZES } from "../../constants";
 import SERVER from "../../../config";
 import AnimalInfo from "./AnimalInfo";
 import OwnerInfo from "./OwnerInfo";
 import AlerteInfo from "./AlerteInfo";
 import CloseModal from "../utility/CloseModalButton";
-import ButtonDeleteAdmin from "../utility/ButtonDeleteAdmin";
 
 const { width, height } = Dimensions.get("window");
 
@@ -32,16 +32,19 @@ const AnimalBigScreen = (props) => {
       {props.AuthProps.token ? (
         <>
           {tokenDecode(props.AuthProps.token).role.includes("ROLE_ADMIN") ? (
-            <ButtonDeleteAdmin
-              name="supprimer"
-              extraStyle={{
-                position: "absolute",
-                top: 40,
-                right: 20,
-                zIndex: 1,
-              }}
-              onPress={() => props.navigation.push("AnimalDeleteAdmin", {data :props.route.params.data})}
-            />
+            <TouchableOpacity
+              style={styles.deleteAdmin}
+              onPress={() =>
+                props.navigation.push("AnimalDeleteAdmin", {
+                  data: props.route.params.data,
+                })
+              }
+            >
+              <Image
+                source={icons.trash}
+                style={{ height: "100%", width: "100%" }}
+              />
+            </TouchableOpacity>
           ) : null}
         </>
       ) : null}
@@ -85,8 +88,12 @@ const AnimalBigScreen = (props) => {
         renderItem={({item, index}) => {
           return (
             <View style={styles.flatListContainer} key={index.toString()}>
-              {index === 0 ? <AnimalInfo data={props.route.params.data} /> : null}
-              {index === 1 ? <OwnerInfo data={props.route.params.data} /> : null}
+              {index === 0 ? (
+                <AnimalInfo data={props.route.params.data} />
+              ) : null}
+              {index === 1 ? (
+                <OwnerInfo data={props.route.params.data} />
+              ) : null}
               {index === 2 ? (
                 <AlerteInfo
                   data={props.route.params.data}
@@ -111,10 +118,17 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    //backgroundColor: "#98dfeb",
-    //backgroundColor: "#0dafd7",
     backgroundColor: COLORS.secondaryLight,
     borderRadius: 50,
+  },
+  deleteAdmin: {
+    position: "absolute",
+    height: 40,
+    width: 40,
+    top: "6%",
+    right: "8%",
+    marginBottom: 10,
+    zIndex: 2,
   },
   imageContainer: {
     height: 300,
@@ -144,8 +158,6 @@ const styles = StyleSheet.create({
   },
   flatListContainer: {
     width: width,
-    //backgroundColor: "#38cbf0",
-    //backgroundColor: "#98dfeb",
     backgroundColor: COLORS.secondary,
   },
   descriptionContainer: {

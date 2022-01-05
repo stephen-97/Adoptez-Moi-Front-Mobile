@@ -1,12 +1,7 @@
 const back = require("../assets/icons/back.png");
-const like = require("../assets/icons/like.png");
 const list = require("../assets/icons/list.png");
-const location = require("../assets/icons/location.png");
-const nearby = require("../assets/icons/nearby.png");
 const pin = require("../assets/icons/pin.png");
-const redPin = require("../assets/icons/red-pin.png");
 const search = require("../assets/icons/search.png");
-const star = require("../assets/icons/star.png");
 const user = require("../assets/icons/user.png");
 const arrowDown = require("../assets/icons/white-arrow-down.png");
 const arrowUp = require("../assets/icons/white-arrow-up.png");
@@ -20,17 +15,23 @@ const arrowDoubleWhite = require("../assets/icons/arrow-double-white.png");
 const spinner = require("../assets/icons/spinner.png");
 const email = require("../assets/icons/email.png");
 const phone = require("../assets/icons/phone.png");
+const trash = require("../assets/icons/trash.png");
+const animalType1 = require("../assets/icons/animalType1.png");
+const animalType2 = require("../assets/icons/animalType2.png");
+const animalType3 = require("../assets/icons/animalType3.png");
+const animalType4 = require("../assets/icons/animalType4.png");
+const animalType5 = require("../assets/icons/animalType5.png");
+const blur = require("../assets/icons/blurImage.png");
+const question = require("../assets/icons/question.png");
+const magnifier = require("../assets/icons/magnifier.png");
+const home = require("../assets/icons/home.png");
+const profile = require("../assets/icons/profile.png");
 
 export default {
   back,
-  like,
   list,
-  location,
-  nearby,
   pin,
-  redPin,
   search,
-  star,
   user,
   arrowDown,
   arrowUp,
@@ -44,4 +45,15 @@ export default {
   spinner,
   email,
   phone,
+  trash,
+  animalType1,
+  animalType2,
+  animalType3,
+  animalType4,
+  animalType5,
+  blur,
+  question,
+  magnifier,
+  home,
+  profile,
 };

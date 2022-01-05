@@ -8,9 +8,11 @@ const initialState = [
 ];
 
 const initialState2 = {
-  espece: "",
-  sexe: "",
-  departement: "",
+  order: null,
+  specie: [],
+  sex: null,
+  department: null,
+  priceRange: null,
 };
 
 const initialStateAuth = {

@@ -47,6 +47,7 @@ function DrawerContent(props) {
           }}
         >
           <Text style={styles.size_text_nav_bar}>Accueil</Text>
+          <Image style={styles.icon} source={icons.home} />
           <Image style={styles.arrow_icon} source={icons.arrowFwd} />
         </TouchableOpacity>
 
@@ -62,6 +63,7 @@ function DrawerContent(props) {
               }}
             >
               <Text style={styles.size_text_nav_bar}>Page de compte</Text>
+              <Image style={styles.icon} source={icons.profile} />
               <Image style={styles.arrow_icon} source={icons.arrowFwd} />
             </TouchableOpacity>
             
@@ -91,6 +93,7 @@ function DrawerContent(props) {
               }}
             >
               <Text style={styles.size_text_nav_bar}>Connexion</Text>
+              <Image style={styles.icon} source={icons.profile} />
               <Image style={styles.arrow_icon} source={icons.arrowFwd} />
             </TouchableOpacity>
 
@@ -106,6 +109,7 @@ function DrawerContent(props) {
           }}
         >
           <Text style={styles.size_text_nav_bar}>Recherche</Text>
+          <Image style={styles.icon} source={icons.magnifier} />
           <Image style={styles.arrow_icon} source={icons.arrowFwd} />
         </TouchableOpacity>
 
@@ -118,6 +122,7 @@ function DrawerContent(props) {
           }}
         >
           <Text style={styles.size_text_nav_bar}>FAQ</Text>
+          <Image style={styles.icon} source={icons.question} />
           <Image style={styles.arrow_icon} source={icons.arrowFwd} />
         </TouchableOpacity>
 
@@ -192,9 +197,9 @@ const styles = StyleSheet.create({
   size_text_nav_bar: {
     fontSize: SIZES.h3,
     fontWeight: "bold",
-    color: "gray",
+    color: "white",
     alignSelf: "flex-start",
-    marginLeft: 30,
+    marginLeft: 90,
   },
   arrow_icon: {
     height: 30,
@@ -202,7 +207,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 20,
   },
-
+  icon: {
+    height: 40,
+    width: 40,
+    position: "absolute",
+    left: 20,
+  },
   line: {
     borderBottomWidth: 1,
     borderBottomColor: "white",

@@ -2,6 +2,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnimalBigScreen from "../components/animalAnnonceComponents/AnimalBigScreen";
 import HomePage from "../screens/HomePage";
+import SpeciesPageView from "../components/homePageComponents/SpeciesPageView";
 
 const Stack = createStackNavigator();
 
@@ -9,10 +10,8 @@ const HomePageRouting = ({ navigation, route }) => {
   return (
     <React.Fragment key="AccountPageNavigate">
       <Stack.Navigator
-        mode="modal"
         screenOptions={{
           headerShown: false,
-          presentation: "transparentModal",
         }}
       >
         <Stack.Screen
@@ -35,6 +34,15 @@ const HomePageRouting = ({ navigation, route }) => {
             }}
           />
         </Stack.Group>
+        <Stack.Screen
+          headerMode="none"
+          name="SpeciePage"
+          component={SpeciesPageView}
+          initialParams={{ navigation: navigation, routeLogin: route}}
+          options={{
+            animationEnabled: true,
+          }}
+        />
       </Stack.Navigator>
     </React.Fragment>
   );
