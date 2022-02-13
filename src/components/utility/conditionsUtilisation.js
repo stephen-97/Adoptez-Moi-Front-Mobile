@@ -12,6 +12,7 @@ const ConditionsUtilisation = (props) => {
         <View style={styles.closeModalView}>
           <CloseModal navigation={() =>props.navigation.goBack(null)}/>
         </View>
+        <Text style={styles.title}>Conditions</Text>
       </View>
       <ScrollView style={styles.miniWindowContainer}>
         <Text>
@@ -157,16 +158,27 @@ const styles = StyleSheet.create({
   miniWindowContainer: {
     zIndex: 100,
     padding: 15,
-    marginBottom: 50,
+    paddingBottom: 50,
+    backgroundColor: "white",
   },
   header: {
-    backgroundColor: "white",
+    backgroundColor: COLORS.secondary,
     height: 110,
+    justifyContent: "center",
   },
   closeModalView: {
     position: "absolute",
-    top: 50,
+    height: 20,
+    backgroundColor: "red",
+    top: 40,
     left: 50,
+    zIndex: 1,
+  },
+  title: {
+    fontSize: SIZES.h2,
+    width: "100%",
+    position: "absolute",
+    textAlign: "center",
   }
 });
 

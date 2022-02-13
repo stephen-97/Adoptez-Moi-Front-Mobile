@@ -501,13 +501,13 @@ const styles = StyleSheet.create({
     color: "gray",
   },
   picker_style: {
-    height: 100,
+    height: 60,
     width: 250,
     borderRadius: 50,
     backgroundColor: "white",
   },
   picker_item: {
-    height: 100,
+    height: 60,
     fontSize: 20,
   },
   toggleTitle: {

@@ -51,7 +51,7 @@ const ConfirmMessage = (props) => {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
-          "Authorization": props.AuthProps.token,
+          Authorization: props.AuthProps.token,
         },
       }
     )

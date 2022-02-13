@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { COLORS, SIZES } from "../../constants";
+import { COLORS, SIZES, icons } from "../../constants";
 import SERVER from "../../../config";
 
 const AlerteInfo = (props) => {
@@ -67,25 +67,31 @@ const AlerteInfo = (props) => {
   return (
     <ScrollView contentContainerStyle={{ padding: 20 }}>
       <Text style={styles.title}>
-        Autres annonces de {props.data._user.username}
+        {` Autres annonces de ${props.data._user.username}    `}
+        <Image
+          style={styles.imageAvatar}
+          source={
+            props.data._user.avatar
+              ? {
+                  uri: `http://${SERVER.NAME}/avatar/${props.data._user.avatar}`,
+                }
+              : icons.accountLogo
+          }
+        />
       </Text>
-      {data.map((elem, i) => (
-        <>
-          {props.data.id !== data[i].id
-            ? renderOthersAnimalFromUser(elem, i)
-            : null}
-        </>
-      ))}
+      <View style={{marginTop: 50}}>
+        {data.map((elem, i) => (
+          <>
+            {props.data.id !== data[i].id
+              ? renderOthersAnimalFromUser(elem, i)
+              : null}
+          </>
+        ))}
+      </View>
     </ScrollView>
   );
 };
 
-/**{data.items.map((elem, i) => (
-  <>
-    <Animal key={i+1} navigation={props.navigation} data={elem} />
-    <Line key={i-1} color="#00000050" />
-  </>
-))}**/
 
 const styles = StyleSheet.create({
   line: {
@@ -96,7 +102,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     height: 50,
-    fontSize: SIZES.h2,
+    fontSize: SIZES.h3,
     color: "rgb(85,85,85)",
   },
   block: {
@@ -104,17 +110,25 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: SIZES.borderRadius2,
     backgroundColor: "#cfcfcf",
-    borderColor: "rgb(85,85,85)",
+    borderColor: "white",
     borderWidth: 1,
   },
   image: {
     height: 80,
     width: 80,
+    borderRadius: 50,
+    left: 30,
+    paddingLeft: 20,
     position: "absolute",
     top: 50,
-    transform: [{ translateY: -40 }],
-    left: 20,
+    transform: [{translateY: -40}]
+  },
+  imageAvatar: {
+    height: 80,
+    width: 80,
     borderRadius: 50,
+    left: 50,
+    paddingLeft: 20,
   },
   name: {
     position: "absolute",

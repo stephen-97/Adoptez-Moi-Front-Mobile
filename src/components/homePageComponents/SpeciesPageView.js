@@ -1,16 +1,24 @@
 import React, { useEffect, useState} from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+} from "react-native";
 import { connect } from "react-redux";
 import SERVER from "../../../config";
 import RenderOthersAnimalFromUser from "../utility/RenderOtherAnimal";
 import HeaderModal from "../utility/HeaderModal";
-import { COLORS, SIZES } from "../../constants";
-
+import { COLORS, SIZES, icons } from "../../constants";
 const SpeciesPageView = (props) => {
   const [departmentData, setDepartmentData] = useState([]);
   const [annonces, setAnnonces] = useState([]);
   const loadingVerifCounter = 2;
   const [isLoading, setIsLoading] = useState(0);
+
+  const [page, setPage] = useState(0);
 
   const getCountTopMostPopularDepartment = () => {
     fetch(
@@ -84,7 +92,6 @@ const SpeciesPageView = (props) => {
     headerExtraStyle: {
       borderTopLeftRadius: 40,
       borderTopRightRadius: 40,
-      backgroundColor: props.route.params.color2,
     },
     textContainer: {
       padding: 10,
@@ -98,6 +105,37 @@ const SpeciesPageView = (props) => {
       color: COLORS.darkgray,
       textAlign: "center",
     },
+    bottom: {
+      position: "absolute",
+      height: 100,
+      bottom: 0,
+      width: "100%",
+      zIndex: 3,
+      flexDirection: "row",
+      backgroundColor: props.route.params.color2,
+    },
+    touchable1: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      borderColor: "white",
+      borderRightWidth: 1,
+      borderStyle: "solid",
+    },
+    touchable2: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    icon: {
+      height: 60,
+      width: 60,
+    },
+    imageBlur: {
+      position: "absolute",
+      width: "100%",
+      height: "100%",
+    },
   });
   return (
     <>
@@ -105,50 +143,98 @@ const SpeciesPageView = (props) => {
         onPress={() => props.navigation.goBack(null)}
         extraStyle={styles.headerExtraStyle}
       />
-      <ScrollView style={styles.container}>
-        <View style={{ height: 120 }}></View>
-        {isLoading ? (
-          <View style={styles.text}>
-            <View style={styles.textContainer}>
-              <Text style={styles.description}>
-                Regroupe tout les chats domestiques (et non sauvage) qui
-                constituent plus d'une centaine de race répertorié. Obligation
-                légal d'indentification est mise en rigueur par la loi
-                française.
-              </Text>
-            </View>
-            <View style={styles.textContainer}>
-              <Text style={styles.numberOfAnnonce}>
-                Annonces postés : {}
-                <Text style={{ fontWeight: "bold", color: "black" }}>
-                  {props.route.params.count}
+      {page === 0 ? (
+        <ScrollView style={styles.container}>
+          <View style={{ height: 120 }}></View>
+          {isLoading ? (
+            <View style={styles.text}>
+              <View style={styles.textContainer}>
+                <Text style={styles.description}>
+                  Regroupe tout les chats domestiques (et non sauvage) qui
+                  constituent plus d'une centaine de race répertorié. Obligation
+                  légal d'indentification est mise en rigueur par la loi
+                  française.
                 </Text>
-              </Text>
-              <Text style={styles.departmentTitle}>
-                Départements avec le plus d'annonces
-              </Text>
-              {Object.entries(departmentData).map((value, i) => (
-                <Text key={i} style={styles.departmentValues}>
-                  {value[0]} : <Text style={{fontWeight: "bold"}}>{value[1]}</Text>
+              </View>
+              <View style={styles.textContainer}>
+                <Text style={styles.numberOfAnnonce}>
+                  Annonces postés : {}
+                  <Text style={{ fontWeight: "bold", color: "black" }}>
+                    {props.route.params.count}
+                  </Text>
                 </Text>
-              ))}
+                <Text style={styles.departmentTitle}>
+                  Départements avec le plus d'annonces
+                </Text>
+                {Object.entries(departmentData).map((value, i) => (
+                  <Text key={i} style={styles.departmentValues}>
+                    {value[0]} : <Text style={{fontWeight: "bold"}}>{value[1]}</Text>
+                  </Text>
+                ))}
+              </View>
             </View>
-            <View style={[styles.textContainer, { marginVertical: 30 }]}>
-              <Text style={styles.annoncesBlock}>Annonces intéressante</Text>
-              {annonces.map((elem, i) => (
-                <>
-                  <RenderOthersAnimalFromUser
-                    key={i}
-                    species={elem.species}
-                    name={elem.name}
-                    image={`http://${SERVER.NAME}/upload/${elem.images[0].name}`}
-                  />
-                </>
-              ))}
+          ) : null}
+        </ScrollView>
+      ) : (
+        <ScrollView style={styles.container}>
+          <View style={{ height: 100 }}></View>
+          {isLoading ? (
+            <View style={styles.text}>
+              <View style={[styles.textContainer, { marginVertical: 30 }]}>
+                <Text style={styles.annoncesBlock}>Annonces intéressante</Text>
+                {annonces.map((elem, i) => (
+                  <>
+                    <RenderOthersAnimalFromUser
+                      key={i}
+                      species={elem.species}
+                      name={elem.name}
+                      image={`http://${SERVER.NAME}/upload/${elem.images[0].name}`}
+                    />
+                  </>
+                ))}
+              </View>
             </View>
-          </View>
-        ) : null}
-      </ScrollView>
+          ) : null}
+        </ScrollView>
+      )}
+      <View style={styles.bottom}>
+        <Image style={styles.imageBlur} source={icons.blur} />
+        {page === 0 ? (
+          <>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={[styles.touchable1, {backgroundColor : COLORS.lightGray}]}
+              onPress={() => setPage(0)}
+            >
+              <Image style={styles.icon} source={icons.interrogation} />
+            </TouchableOpacity>
+            <TouchableOpacity
+            activeOpacity={1}
+              style={[styles.touchable2]}
+              onPress={() => setPage(1)}
+            >
+              <Image style={styles.icon} source={icons.list} />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={[styles.touchable1]}
+              onPress={() => setPage(0)}
+            >
+              <Image style={styles.icon} source={icons.interrogation} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={1}
+              style={[styles.touchable2, { backgroundColor: COLORS.lightGray }]}
+              onPress={() => setPage(1)}
+            >
+              <Image style={styles.icon} source={icons.list} />
+            </TouchableOpacity>
+          </>
+          )}
+      </View>
     </>
   );
 };

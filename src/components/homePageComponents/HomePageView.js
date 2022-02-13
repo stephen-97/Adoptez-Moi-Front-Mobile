@@ -8,6 +8,7 @@ import {
   Animated,
   FlatList,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SERVER from "../../../config";
@@ -75,7 +76,7 @@ const HomePageView = (props) => {
   }, [isVisible]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.miniContainer}>
         <Text style={[styles.titreCarrousel]}>Animaux </Text>
         <FlatList
@@ -178,7 +179,7 @@ const HomePageView = (props) => {
           <Text style={styles.textButton}>Connexion</Text>
         </TouchableOpacity>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

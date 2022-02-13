@@ -23,6 +23,7 @@ const AnimalList2 = (props) => {
   const itemsPorPage = 10;
   const scrollRef = useRef();
   const [lastPage, setLastPage] = useState(1);
+  const [isloaded, setIsLoaded] = useState(false);
 
   const formDataBuild = () => {
     const formData = new FormData();
@@ -40,6 +41,11 @@ const AnimalList2 = (props) => {
     if (props.FilterData.specie) {
       for (let i = 0; i < props.FilterData.specie.length; i++) {
         formData.append(`specie[${i}]`, props.FilterData.specie[i]);
+      }
+    }
+    if (props.FilterData.priceRange) {
+      for (let i = 0; i < props.FilterData.priceRange.length; i++) {
+        formData.append(`priceRange[${i}]`, props.FilterData.priceRange[i]);
       }
     }
     return formData;
@@ -60,6 +66,7 @@ const AnimalList2 = (props) => {
         setLastPage(
           Math.floor(jsonData.total_count / jsonData.num_items_per_page + 1)
         );
+        setIsLoaded(true);
       });
   };
 
@@ -152,17 +159,21 @@ const AnimalList2 = (props) => {
   return (
     <ScrollView ref={scrollRef} style={styles.container}>
       <View style={styles.pageList}>
-        <Text>{data.total_count} annonces trouvées</Text>
-        {data.items.map((elem, i) => (
+        {isloaded ? (
           <>
-            <Animal
-              key={i.toString()}
-              navigation={props.navigation}
-              data={elem}
-            />
-            <Line key={`${i.toString()}Line`} color="#00000050" />
+            <Text>{data.total_count} annonces trouvées</Text>
+            {data.items.map((elem, i) => (
+              <>
+                <Animal
+                  key={i.toString()}
+                  navigation={props.navigation}
+                  data={elem}
+                />
+                <Line key={`${i.toString()}Line`} color="#00000050" />
+              </>
+            ))}
           </>
-        ))}
+        ) : null}
       </View>
 
       <View style={styles.button_container}>

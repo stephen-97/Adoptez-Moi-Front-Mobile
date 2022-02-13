@@ -9,6 +9,7 @@ import { icons, SIZES, COLORS } from "../constants";
 import AuthentificationRouting from "../routing/AuthentificationRouting";
 import AdminPageRouting from "../routing/AdminPageRouting";
 
+import SERVER from "../../config";
 import { ShowingScreen } from "./ShowingScreen";
 import SliderImage from "../components/animalAnnonceComponents/SliderImage";
 import SearchPageRouting from "../routing/SearchPageRouting";
@@ -27,6 +28,8 @@ const mapStateToProps = (state) => {
   };
 };
 
+
+
 function DrawerContent(props) {
   const changeStoreFilter = (data) => {
     const action = { type: "NAV_PROPS", navigationProps: data };
@@ -35,9 +38,52 @@ function DrawerContent(props) {
     }, []);
   };
   changeStoreFilter(props.navigation);
+
+  const disconnect = () => {
+    const action = {
+      type: "AUTH_PROPS",
+      authentificationProps: { code: false },
+    };
+    props.dispatch(action);
+  };
+
   return (
     <Drawer.Section title=" " style={styles.drawer}>
-      <View style={styles.drawerGlobalView}>
+      <View
+        style={
+          props.AuthProps.token
+            ? [styles.drawerGlobalViewConnected]
+            : styles.drawerGlobalView
+        }
+      >
+        {props.AuthProps.token ? (
+          <TouchableOpacity
+            style={{ height: 250 }}
+            activeOpacity={1}
+            onPress={() => {
+              props.navigation.navigate("compte");
+            }}
+          >
+            <View style={{ flex: 1, alignItems: "center" }}>
+              {tokenDecode(props.AuthProps.token).avatar ? (
+                <Image
+                  style={styles.avatar}
+                  source={{
+                    uri: `http://${SERVER.NAME}/avatar/${tokenDecode(props.AuthProps.token).avatar}`,
+                  }}
+                />
+              ) : (
+                <Image style={styles.avatar} source={icons.accountLogo} />
+              )}
+            </View>
+            <View style={[styles.touchableItemsAccount]}>
+              <Text style={[styles.size_text_nav_bar]}>Page de compte</Text>
+              <Image style={styles.icon} source={icons.profile} />
+              <Image style={styles.arrow_icon} source={icons.arrowFwd} />
+            </View>
+          </TouchableOpacity>
+        ) : null}
+
         <View style={styles.line}></View>
 
         <TouchableOpacity
@@ -55,21 +101,8 @@ function DrawerContent(props) {
 
         {props.AuthProps.token ? (
           <React.Fragment key={"authIsTrue"}>
-            <TouchableOpacity
-              style={styles.touchableItems}
-              activeOpacity={1}
-              onPress={() => {
-                props.navigation.navigate("compte");
-              }}
-            >
-              <Text style={styles.size_text_nav_bar}>Page de compte</Text>
-              <Image style={styles.icon} source={icons.profile} />
-              <Image style={styles.arrow_icon} source={icons.arrowFwd} />
-            </TouchableOpacity>
-            
             {tokenDecode(props.AuthProps.token).role.includes("ROLE_ADMIN") ? (
               <>
-                <View style={styles.line}></View>
                 <TouchableOpacity
                   style={styles.touchableItems}
                   activeOpacity={1}
@@ -79,6 +112,7 @@ function DrawerContent(props) {
                 >
                   <Text style={styles.size_text_nav_bar}>Page Admin</Text>
                   <Image style={styles.arrow_icon} source={icons.arrowFwd} />
+                  <Image style={styles.icon} source={icons.profile} />
                 </TouchableOpacity>
               </>
             ) : null}
@@ -128,6 +162,17 @@ function DrawerContent(props) {
 
         <View style={styles.line}></View>
       </View>
+      {props.AuthProps.token ? (
+        <Text
+          style={styles.deconnexion}
+          onPress={() => {
+            disconnect();
+            props.navigation.navigate("homePage");
+          }}
+        >
+          Déconnexion
+        </Text>
+      ) : null}
     </Drawer.Section>
   );
 }
@@ -183,6 +228,11 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     textAlign: "center",
   },
+  drawerGlobalViewConnected: {
+    width: "100%",
+    alignSelf: "stretch",
+    textAlign: "center",
+  },
   drawerContent: {
     flex: 1,
   },
@@ -194,10 +244,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  touchableItemsAccount: {
+    height: 60,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   size_text_nav_bar: {
     fontSize: SIZES.h3,
     fontWeight: "bold",
-    color: "white",
+    color: "gray",
+    alignSelf: "flex-start",
+    marginLeft: 90,
+  },
+  deconnexion: {
+    fontSize: SIZES.h2,
+    fontWeight: "bold",
+    color: COLORS.tertiary,
+    position: "absolute",
+    bottom: 50,
+    width: "100%",
+    textAlign: "center",
+  },
+  size_text_nav_bar_account: {
+    position: "absolute",
+    bottom: 20,
+    fontSize: SIZES.h3,
+    fontWeight: "bold",
+    color: "gray",
     alignSelf: "flex-start",
     marginLeft: 90,
   },
@@ -205,13 +278,19 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
     position: "absolute",
-    right: 20,
+    right: 10,
   },
   icon: {
     height: 40,
     width: 40,
     position: "absolute",
     left: 20,
+  },
+  avatar: {
+    height: 160,
+    width: 160,
+    borderRadius: 200,
+    top: 25,
   },
   line: {
     borderBottomWidth: 1,

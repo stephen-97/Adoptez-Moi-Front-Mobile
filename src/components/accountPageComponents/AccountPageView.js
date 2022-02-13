@@ -15,8 +15,10 @@ import {
 import { COLORS, SIZES, icons } from "../../constants";
 import { tokenDecode } from "../utility/functions";
 import { convertDateTime, convertDBDate } from "../utility/functions";
+import * as ImagePicker from "expo-image-picker";
 import { refreshToken } from "../utility/functions";
 import ChangePassword from "./ChangePasswordView";
+import SERVER from "../../../config";
 import Line from "../utility/Line";
 import ChangeEmailView from "./ChangeEmailView";
 import AnimalListToUser from "./AnimalListToUser";
@@ -34,9 +36,57 @@ const AccountPageView = (props) => {
     return Object.keys(obj).length === 0;
   };
 
+  const [avatar, setAvatar] = useState(null);
+  const [dataResponse, setDataResponse] = useState(null);
+
+  const handleChoosePhoto = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setAvatar({
+        uri: result.uri,
+        data: result.base64,
+      });
+    }
+  };
+
+  const chosseBasicAvatar = () => {
+    setAvatar(null);
+  };
+
+  const changeStoreAuth = (data) => {
+    const action = { type: "AUTH_PROPS", authentificationProps: data };
+    props.dispatch(action);
+  };
+
+  const changeAvatar = () => {
+    const formData = new FormData();
+    if (avatar) formData.append("avatar", avatar.data);
+    return fetch(`http://${SERVER.NAME}/managerUser/newAvatar`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: props.AuthProps.token,
+      },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((jsonData) => {
+        if (jsonData.status === 200) {
+          changeStoreAuth(jsonData);
+          setDataResponse(jsonData);
+        }
+      });
+  };
+
   const [toggledEmail, setToggledEmail] = useState(false);
   const [toggled, setToggled] = useState(false);
-
+  //const [data, setData] = useState({user :"", email: ""})
   let data = {
     user: "",
     email: "",
@@ -51,9 +101,19 @@ const AccountPageView = (props) => {
   useEffect(() => {
     setToggled(false);
     setToggledEmail(false);
-    console.log(props)
-    refreshToken(props);
   }, [isVisible]);
+
+  useEffect(() => {
+    if (props.AuthProps.token) {
+      data = tokenDecode(props.AuthProps.token);
+      date = convertDateTime(data.createdAt.date);
+    }
+  }, [props.AuthProps]);
+
+  useEffect(() => {
+    changeAvatar();
+  }, [avatar]);
+
 
   return (
     <>
@@ -103,6 +163,43 @@ const AccountPageView = (props) => {
               </View>
 
               <View style={styles.line}></View>
+              <View style={[styles.valuesViewRow]}>
+                <Text style={styles.titleText}>Avatar</Text>
+                <View style={{ flex: 1, alignItems: "center" }}>
+                  <Image
+                    style={styles.image}
+                    source={
+                      data.avatar
+                        ? {
+                            uri: `http://${SERVER.NAME}/avatar/${data.avatar}`,
+                          }
+                        : icons.accountLogo
+                    }
+                  />
+                </View>
+              </View>
+
+              <View style={styles.line}></View>
+
+              <View
+                style={[styles.valuesViewRow, { justifyContent: "center" }]}
+              >
+                <Text
+                  style={styles.avatarText}
+                  onPress={() => handleChoosePhoto()}
+                >
+                  Changer Avatar
+                </Text>
+                <Text>  -  </Text>
+                <Text
+                  style={styles.avatarText}
+                  onPress={() => chosseBasicAvatar()}
+                >
+                  défault
+                </Text>
+              </View>
+
+              <View style={styles.line}></View>
 
               <View style={styles.valuesViewColumn}>
                 <TouchableOpacity
@@ -137,6 +234,7 @@ const AccountPageView = (props) => {
                 {toggledEmail ? <ChangeEmailView toggled={setToggled} /> : null}
               </View>
 
+            
               <View style={styles.line}></View>
               <View style={styles.valuesViewColumn}>
                 <TouchableOpacity
@@ -276,5 +374,18 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 30,
     opacity: 0.3,
+  },
+  image: {
+    height: 55,
+    width: 55,
+    borderRadius: 50,
+  },
+  avatarText: {
+    color: COLORS.tertiary,
+    fontSize: SIZES.h3,
+  },
+  avatarText2: {
+    color: COLORS.tertiary,
+    fontSize: SIZES.h4,
   },
 });

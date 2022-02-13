@@ -62,6 +62,35 @@ const AnimalInfo = (props) => {
             <Text style={styles.valueResponse}>{props.data.department}</Text>
           </View>
         </View>
+        {props.data.species === "chat" || props.data.species === "chien" ? (
+          <>
+            <Line color="rgba(0,0,0,0.1)" />
+
+            <View style={styles.valuesView}>
+              <View style={styles.valueContainer}>
+                <Text style={styles.title}>Identifiant</Text>
+              </View>
+              <View style={styles.valueContainer}>
+                <Text style={styles.valueResponse}>
+                  {props.data.identification_number}
+                </Text>
+              </View>
+            </View>
+
+            <Line color="rgba(0,0,0,0.1)" />
+
+            <View style={styles.valuesView}>
+              <View style={styles.valueContainer}>
+                <Text style={styles.title}>Méthode</Text>
+              </View>
+              <View style={styles.valueContainer}>
+                <Text style={styles.valueResponse}>
+                  {props.data.chip_or_tatoo}
+                </Text>
+              </View>
+            </View>
+          </>
+        ) : null}
 
         <Line color="rgba(0,0,0,0.1)" />
 
@@ -75,7 +104,7 @@ const AnimalInfo = (props) => {
         </View>
 
         <Line color="rgba(0,0,0,0.1)" />
-
+        
         <View style={styles.valuesTextAreaView}>
           <View style={styles.valueContainer}>
             <Text style={styles.title}>Informations</Text>

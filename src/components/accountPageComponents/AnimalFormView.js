@@ -16,6 +16,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import SERVER from "../../../config";
 import { COLORS, SIZES, departements } from "../../constants";
+import Button from "../utility/Button";
 import Line from "../utility/Line";
 import MiniButton from "../utility/MiniButton";
 import { tokenDecode } from "../utility/functions";
@@ -39,8 +40,35 @@ const AnimalFormView = (props) => {
     data = tokenDecode(props.AuthProps.token);
   }
 
-  const verificationValue = 7;
+  const raceChienArray = [
+    "Beagle",
+    "Berger australien",
+    "Cavalier king charles",
+    "Chien de berger belge",
+    "Cocker spaniel anglais",
+    "Golden retriever",
+    "Retriever du labrador",
+    "Setter anglais",
+    "Staffordshire bull terrier",
+    "Staffordshrine terrier américain",
+    "Autre",
+  ];
 
+  const raceChatArray = [
+    "Bengal",
+    "British Shorthair",
+    "Chartreux",
+    "Maine Coon",
+    "Norvégien",
+    "Persan",
+    "Ragdoll",
+    "Sacré de Birmanie",
+    "Siamois",
+    "Sphynx",
+    "Autre",
+  ];
+
+  const verificationValue = props.species === "chat" || props.species === "chien" ? 7 : 6;
   //spiner
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState(false);
@@ -56,6 +84,8 @@ const AnimalFormView = (props) => {
   const [race, setRace] = useState("");
   const [departement, setDepartement] = useState("Paris 75");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [identificationNumber, setIdentificationNumber] = useState("");
+  const [chipOrTatoo, setChipOrTatoo] = useState("Puce");
   const [image, setImage] = useState(null);
 
   //vérifications
@@ -65,6 +95,7 @@ const AnimalFormView = (props) => {
   const [ageError, setAgeError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [idNumberError, setIdNumberError] = useState(false);
 
   const handleChoosePhoto = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -119,7 +150,7 @@ const AnimalFormView = (props) => {
       i += 1;
     }
     if (phoneNumber !== "") {
-      if (!/^\d+$/.test(phoneNumber)) {
+      if (!/^\d+$/.test(phoneNumber) && phoneNumber.length !== 10) {
         setPhoneError(true);
       } else {
         setPhoneError(false);
@@ -133,6 +164,12 @@ const AnimalFormView = (props) => {
       setImageError(true);
     } else {
       setImageError(false);
+      
+    }
+    if (identificationNumber.length !== 15) {
+      setIdNumberError(true);
+    } else {
+      setIdNumberError(false);
       i += 1;
     }
     return i === verificationValue;
@@ -151,11 +188,13 @@ const AnimalFormView = (props) => {
       formData.append("price", price);
       formData.append("sex", sex);
       formData.append("age", completeAge);
-      formData.append("specie", specie);
+      formData.append("species", props.species);
       formData.append("race", race);
       formData.append("description", description);
       formData.append("departement", departement);
       formData.append("phoneNumber", phoneNumber);
+      formData.append("chipOrTatoo", chipOrTatoo);
+      formData.append("identificationNumber", identificationNumber);
       formData.append("image", image.data);
       return fetch(`http://${SERVER.NAME}/animal/new/`, {
         method: "POST",
@@ -169,6 +208,7 @@ const AnimalFormView = (props) => {
         .then((response) => response.text())
         .then((jsonData) => {
           setLoading(false);
+          console.log(jsonData);
         });
     }
     return null;
@@ -190,9 +230,10 @@ const AnimalFormView = (props) => {
     setAgeMonthOrYear("mois");
     setPrice("");
     setDescription("");
-    setSpecie("Chien");
+    setSpecie(props.species);
     setRace("");
     setDepartement("Paris 75");
+    setIdentificationNumber("");
     setImage(null);
     setLoading(false);
     setResultData(false);
@@ -201,10 +242,16 @@ const AnimalFormView = (props) => {
   return (
     <>
       <ScrollView>
+        <Text
+          style={styles.backButton}
+          onPress={() => props.onChangeForm(false)}
+        >
+          Retour
+        </Text>
         <View style={styles.block}>
           <View style={styles.avisList}>
-            <View style={styles.avisListTitleBlock}>
-              <Text style={styles.title}>Animal</Text>
+            <View style={[styles.avisListTitleBlock, {backgroundColor: props.color}]}>
+              <Text style={styles.title}>{props.species}</Text>
             </View>
             {!resultData ? (
               <View>
@@ -254,7 +301,105 @@ const AnimalFormView = (props) => {
                     </Picker>
                   </View>
                 </View>
+
+                {props.species === "chat" || props.species === "chien" ? (
+                  <>
+                    <View style={{ marginVertical: 15 }}>
+                      <Line color="rgba(255,255,255,255.3)" />
+                    </View>
+                    <View style={styles.inputBlock}>
+                      <Text style={styles.inputTitle}>
+                        Numéro d'identification *
+                      </Text>
+                      <TextInput
+                        placeholder="15 chiffres"
+                        style={
+                          !idNumberError
+                            ? styles.textInput
+                            : [styles.textInput, { borderColor: "red" }]
+                        }
+                        autoCapitalize="none"
+                        onFocus={() => setIdNumberError(false)}
+                        onChangeText={(e) => setIdentificationNumber(e)}
+                        defaultValue={price}
+                      />
+                    </View>
+                    <View style={{ marginVertical: 15 }}>
+                      <Line color="rgba(255,255,255,255.3)" />
+                    </View>
+                    <View style={styles.inputBlock}>
+                      <Text style={styles.inputTitle}>
+                        Mode d'identification
+                      </Text>
+                      <Picker
+                        style={styles.picker}
+                        itemStyle={styles.pickerItem}
+                        selectedValue={chipOrTatoo}
+                        onValueChange={(e) => setChipOrTatoo(e)}
+                      >
+                        <Picker.Item label="Puce" value="Puce" />
+                        <Picker.Item label="Tatouage" value="Tatouage" />
+                      </Picker>
+                    </View>
+                  </>
+                ) : null}
+
+                <View style={{ marginVertical: 15 }}>
+                  <Line color="rgba(255,255,255,255.3)" />
+                </View>
+
+                <View style={styles.inputBlock}>
+                  <Text style={styles.inputTitle}>Sexe *</Text>
+                  <Picker
+                    style={styles.picker}
+                    itemStyle={styles.pickerItem}
+                    selectedValue={sex}
+                    onValueChange={(e) => setSex(e)}
+                  >
+                    <Picker.Item label="Femelle" value="Femelle" />
+                    <Picker.Item label="Mâle" value="Mâle" />
+                  </Picker>
+                </View>
   
+                <View style={{ marginVertical: 15 }}>
+                  <Line color="rgba(255,255,255,255.3)" />
+                </View>
+
+                <View style={styles.inputBlock}>
+                  <Text style={styles.inputTitle}>Race</Text>
+                  {props.species === "chat" || props.species === "chien" ? (
+                    <Picker
+                      style={styles.picker}
+                      itemStyle={styles.pickerItem}
+                      selectedValue={specie}
+                      onValueChange={(e) => setSpecie(e)}
+                    >
+                      {props.species === "chat"
+                        ? raceChatArray.map((item, i) => (
+                            <Picker.Item key={i} label={item} value={item} />
+                          ))
+                        : null}
+                      {props.species === "chien"
+                        ? raceChienArray.map((item, i) => (
+                            <Picker.Item key={i} label={item} value={item} />
+                          ))
+                        : null}
+                    </Picker>
+                  ) : (
+                    <TextInput
+                      placeholder=""
+                      style={
+                        !priceError
+                          ? styles.textInput
+                          : [styles.textInput, { borderColor: "red" }]
+                      }
+                      autoCapitalize="none"
+                      onChangeText={(e) => setSpecie(e)}
+                      defaultValue=""
+                    />
+                  )}
+                </View>
+
                 <View style={{ marginVertical: 15 }}>
                   <Line color="rgba(255,255,255,255.3)" />
                 </View>
@@ -302,58 +447,6 @@ const AnimalFormView = (props) => {
                 </View>
   
                 <View style={styles.inputBlock}>
-                  <Text style={styles.inputTitle}>Espèce *</Text>
-                  <Picker
-                    style={styles.picker}
-                    itemStyle={styles.pickerItem}
-                    selectedValue={specie}
-                    onValueChange={(e) => setSpecie(e)}
-                  >
-                    <Picker.Item label="Chien" value="Chien" />
-                    <Picker.Item label="Chat" value="Chat" />
-                    <Picker.Item label="Rongueur" value="Rongueur" />
-                    <Picker.Item label="Volatile" value="Volatile" />
-                    <Picker.Item label="Reptiles" value="Reptile" />
-                    <Picker.Item label="Autres" value="Autres" />
-                  </Picker>
-                </View>
-  
-                <View style={{ marginVertical: 15 }}>
-                  <Line color="rgba(255,255,255,255.3)" />
-                </View>
-  
-                <View style={styles.inputBlock}>
-                  <Text style={styles.inputTitle}>Sexe *</Text>
-                  <Picker
-                    style={styles.picker}
-                    itemStyle={styles.pickerItem}
-                    selectedValue={sex}
-                    onValueChange={(e) => setSex(e)}
-                  >
-                    <Picker.Item label="Femelle" value="Femelle" />
-                    <Picker.Item label="Mâle" value="Mâle" />
-                  </Picker>
-                </View>
-  
-                <View style={{ marginVertical: 15 }}>
-                  <Line color="rgba(255,255,255,255.3)" />
-                </View>
-  
-                <View style={styles.inputBlock}>
-                  <Text style={styles.inputTitle}>Race</Text>
-                  <TextInput
-                    placeholder="Veuillez précisez les croissements si batard"
-                    style={styles.textInput}
-                    onChangeText={(e) => setRace(e)}
-                    defaultValue={race}
-                  />
-                </View>
-  
-                <View style={{ marginVertical: 15 }}>
-                  <Line color="rgba(255,255,255,255.3)" />
-                </View>
-  
-                <View style={styles.inputBlock}>
                   <Text style={styles.inputTitle}>Département de résidence de l'animal *</Text>
                   <Picker
                     style={styles.picker}
@@ -374,7 +467,7 @@ const AnimalFormView = (props) => {
                 <View style={styles.inputBlock}>
                   <Text style={styles.inputTitle}>Numéro de téléphone supplémentaire ?</Text>
                   <TextInput
-                    placeholder="numéro de téléphone"
+                    placeholder=""
                     style={
                       !phoneError
                         ? styles.textInput
@@ -457,6 +550,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.tertiary,
     borderRadius: 5,
   },
+  backButton: {
+    textAlign: "center",
+    fontSize: SIZES.h2,
+    color: COLORS.tertiary,
+    marginTop: 10,
+  },
   textButton: {
     fontSize: SIZES.h2,
     color: "white",
@@ -470,7 +569,6 @@ const styles = StyleSheet.create({
   avisListTitleBlock: {
     padding: SIZES.padding,
     alignItems: "center",
-    backgroundColor: COLORS.secondary,
     borderTopStartRadius: SIZES.borderRadius2,
     borderTopEndRadius: SIZES.borderRadius2,
   },

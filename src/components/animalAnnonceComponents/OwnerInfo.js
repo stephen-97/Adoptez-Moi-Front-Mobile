@@ -27,6 +27,13 @@ const OwnerInfo = (props) => {
     Linking.OpenURL(`${props.data._user.email}`);
   };
 
+  const phoneNumberbasic = props.data.phone_number;
+  let phoneNumber = "";
+  if(phoneNumberbasic){
+    let phoneNumber = phoneNumberbasic.match(/.{1,2}/g);
+    phoneNumber.join(" ");
+  }
+
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
       <View style={styles.valuesView}>
@@ -45,10 +52,10 @@ const OwnerInfo = (props) => {
           <Text style={styles.title}>Mail</Text>
         </View>
         <View style={styles.valueContainer}>
-          <Text style={styles.valueResponseEmail}>{props.data._user.email}</Text>
+          <Text style={styles.valueResponse}>{props.data._user.email}</Text>
         </View>
       </View>
-
+      
       <Line color="rgba(0,0,0,0.1)" />
 
       <View style={styles.valuesView}>
@@ -58,7 +65,7 @@ const OwnerInfo = (props) => {
         <View style={styles.valueContainer}>
           <Text style={styles.valueResponse}>
             {props.data.phone_number !== ""
-              ? props.data.phone_number
+              ? props.data.phone_number.replace(/(.{2})/g, "$1 ")
               : "(Non renségnié)"}
           </Text>
         </View>

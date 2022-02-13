@@ -215,9 +215,9 @@ const RegistrationForm = (props) => {
 
   return (
     <View style={styles.page}>
-       {helperStatue ? (
-            <InfoMessage onChange={setHelperStatue} message={dataInfoMessage} />
-          ) : null}
+      {helperStatue ? (
+        <InfoMessage onChange={setHelperStatue} message={dataInfoMessage} />
+      ) : null}
       <View style={styles.connect}>
         <View style={styles.connexionTitle}>
           <Text style={styles.connexionTitleText}>Création d'un compte</Text>

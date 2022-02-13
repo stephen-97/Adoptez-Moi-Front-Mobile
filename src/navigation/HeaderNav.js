@@ -43,11 +43,13 @@ const HeaderNav = (props) => {
           <Title style={styles.title}>{props.name}</Title>
         </Body>
       </Header>
-      {toggled ? <SliderAccountLogo 
+      {toggled ? (
+        <SliderAccountLogo
           style={styles.sliderAccount}
           navigation={props.NavProps}
           toggled={setToggled}
-        />: null}
+        />
+      ) : null}
     </>
   );
 };
