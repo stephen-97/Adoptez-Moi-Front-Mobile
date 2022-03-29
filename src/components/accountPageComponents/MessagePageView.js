@@ -1,0 +1,158 @@
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { View, StyleSheet, UIManager, Platform, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import { COLORS, SIZES, icons } from "../../constants";
+import Animal from "../searchPageComponents/Animal";
+import Line from "../utility/Line";
+import SERVER from "../../../config";
+import LoaderSpinner from "../utility/LoaderSpinner";
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+const MessagePageView = (props) => {
+ 
+  const [data, setData] = useState([]);
+    
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = () => {
+    return fetch(`http://${SERVER.NAME}/comments/getNotViewedQuestion`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: props.AuthProps.token,
+      },
+    })
+      .then((response) => response.json())
+      .then((jsonData) => {
+        setData(jsonData);
+      });
+  };
+
+  return (
+    <ScrollView>
+      {data.map((elem, i) => (
+        <TouchableOpacity
+          key={i}
+          onPress={() =>
+            props.navigation.push("CommentBigScreen", {
+              data: elem,
+              navigation: props.navigation,
+              type: elem.answers.length === 0 && elem.answer_to.length === 0 ? "answer" : "alreadyAnswered",
+              questionOrResponse: "response",
+            })
+          }
+          activeOpacity={1}
+          style={
+            elem.answers.length === 0 ? styles.content : styles.contentAnswered
+          }
+        >
+          <View style={styles.animalNameAndImageContent}>
+            <Text style={styles.animalName}>{elem.animal.name}</Text>
+            <Image
+              style={styles.image}
+              source={{
+                uri: `http://${SERVER.NAME}/upload/${elem.animal.images[0].name}`,
+              }}
+            />
+          </View>
+          <View style={styles.lineContainer}>
+            <Line color="#FFFFFF60" />
+          </View>
+          <View style={styles.userNameAndImageContent}>
+            <Text style={styles.userName}>{elem.sender.username}</Text>
+            {elem.sender.avatar ? (
+              <Image
+                style={styles.imageUser}
+                source={{
+                  uri: `http://${SERVER.NAME}/upload/${elem.sender.avatar}`,
+                }}
+              />
+            ) : (
+              <Image style={styles.imageUser} source={icons.accountLogo} />
+            )}
+          </View>
+          <Text style={styles.textContent}>{elem.content}</Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+};
+
+const mapStateToProps = (state) => {
+  return {
+    AuthProps: state.AuthentificationReducer,
+  };
+};
+
+export default connect(mapStateToProps)(MessagePageView);
+
+const styles = StyleSheet.create({
+  content: {
+    margin: 10,
+    paddingVertical: 10,
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
+  },
+  contentAnswered: {
+    margin: 10,
+    paddingVertical: 10,
+    backgroundColor: COLORS.darkgray,
+    borderRadius: 10,
+  },
+  image: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+  },
+  imageUser: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+  },
+  animalNameAndImageContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+  },
+  userNameAndImageContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+    paddingHorizontal: 15,
+  },
+  animalName: {
+    fontSize: SIZES.h2,
+    color: "white",
+    marginRight: 15,
+    fontWeight: "bold",
+  },
+  userName: {
+    fontSize: SIZES.h4,
+    color: "white",
+    marginRight: 15,
+  },
+  textContent: {
+    color: "white",
+    paddingBottom: 10,
+    paddingHorizontal: 15,
+  },
+  lineContainer: {
+    marginVertical: 15,
+  },
+  questionOrResponse: {
+    position: "absolute",
+    top: 5,
+    right: 15,
+    color: COLORS.darkgray,
+    fontSize: 22,
+  }
+});

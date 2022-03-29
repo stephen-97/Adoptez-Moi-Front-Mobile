@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useIsFocused } from "@react-navigation/native";
-import * as SecureStore from "expo-secure-store";
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -9,12 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { connect } from "react-redux";
-import { tokenDecode } from "../utility/functions";
-import SERVER from "../../../config";
 import { COLORS, SIZES } from "../../constants";
-import LoaderSpinner from "../utility/LoaderSpinner";
-import BottomMessage2 from "../utility/BottomMessage2";
 
 const FaqPage = (props) => {
 
@@ -103,7 +96,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   connexionTitle: {
-    backgroundColor: COLORS.darkgray,
+    backgroundColor: COLORS.secondary,
     padding: 10,
     overflow: "hidden",
     borderTopLeftRadius: 19,

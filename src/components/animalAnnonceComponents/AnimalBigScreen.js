@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Animated,
   View,
@@ -14,6 +14,7 @@ import { tokenDecode } from "../utility/functions";
 import { COLORS, icons, SIZES } from "../../constants";
 import SERVER from "../../../config";
 import AnimalInfo from "./AnimalInfo";
+import CommentsInfo from "./CommentInfo";
 import OwnerInfo from "./OwnerInfo";
 import AlerteInfo from "./AlerteInfo";
 import CloseModal from "../utility/CloseModalButton";
@@ -21,16 +22,68 @@ import CloseModal from "../utility/CloseModalButton";
 const { width, height } = Dimensions.get("window");
 
 const AnimalBigScreen = (props) => {
-  const valueSlider = ["Animal", "Maître", "Autres"];
+  const valueSlider = ["Animal", "Maître", "Autres", "Questions"];
 
-  const data = [0, 1, 2];
+  const data = [0, 1, 2, 3];
   const scrollX = new Animated.Value(0);
   const position = Animated.divide(scrollX, width);
+
+  const [favoriteChecked, setFavoriteChecked] = useState(false);
+  const [comments, setComments] = useState([]);
+
+  const addOrRemoveFavorite = () => {
+    const intermediate = favoriteChecked;
+    setFavoriteChecked(!favoriteChecked);
+    const formData = new FormData();
+    return fetch(
+      `http://${SERVER.NAME}/favorite/addOrRemove/${props.route.params.data.id}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: props.AuthProps.token,
+        },
+        body: formData,
+      }
+    )
+      .then((response) => response.json())
+      .then((jsonData) => {
+        if (jsonData.status !== "200") setFavoriteChecked(intermediate);
+      });
+  };
+
+  const checkIfThisAnimalIsOnFavorite = () => {
+    if (props.route.params.data.favorite.length !== 0) {
+      for (let i = 0; i < props.route.params.data.favorite.length; i = 1 + i) {
+        if (
+          props.route.params.data.favorite[i].username ===
+          tokenDecode(props.AuthProps.token).user
+        )
+          setFavoriteChecked(true);
+      }
+    } else {
+      setFavoriteChecked(false);
+    }
+  };
+
+  useEffect(() => {
+    if (props.AuthProps.token) checkIfThisAnimalIsOnFavorite();
+  }, []);
 
   return (
     <View style={styles.container}>
       {props.AuthProps.token ? (
         <>
+          <TouchableOpacity
+            style={styles.favoriteIcon}
+            onPress={() => addOrRemoveFavorite()}
+          >
+            <Image
+              source={favoriteChecked ? icons.heartChecked : icons.heart}
+              style={{ height: "100%", width: "100%" }}
+            />
+          </TouchableOpacity>
           {tokenDecode(props.AuthProps.token).role.includes("ROLE_ADMIN") ? (
             <TouchableOpacity
               style={styles.deleteAdmin}
@@ -85,9 +138,9 @@ const AnimalBigScreen = (props) => {
         scrollEventThrottle={16}
         decelerationRate="fast"
         showsHorizontalScrollIndicator={false}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           return (
-            <View style={styles.flatListContainer} key={index.toString()}>
+            <View style={styles.flatListContainer} key={index}>
               {index === 0 ? (
                 <AnimalInfo data={props.route.params.data} />
               ) : null}
@@ -96,6 +149,13 @@ const AnimalBigScreen = (props) => {
               ) : null}
               {index === 2 ? (
                 <AlerteInfo
+                  comments={comments}
+                  data={props.route.params.data}
+                  navigation={props.route.params.navigation}
+                />
+              ) : null}
+              {index === 3 ? (
+                <CommentsInfo
                   data={props.route.params.data}
                   navigation={props.route.params.navigation}
                 />
@@ -127,6 +187,15 @@ const styles = StyleSheet.create({
     width: 40,
     top: "6%",
     right: "8%",
+    marginBottom: 10,
+    zIndex: 2,
+  },
+  favoriteIcon: {
+    position: "absolute",
+    height: 40,
+    width: 40,
+    top: "30%",
+    left: "8%",
     marginBottom: 10,
     zIndex: 2,
   },

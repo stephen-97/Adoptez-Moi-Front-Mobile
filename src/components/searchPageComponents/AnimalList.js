@@ -165,11 +165,11 @@ const AnimalList2 = (props) => {
             {data.items.map((elem, i) => (
               <>
                 <Animal
-                  key={i.toString()}
+                  key={i+1}
                   navigation={props.navigation}
                   data={elem}
                 />
-                <Line key={`${i.toString()}Line`} color="#00000050" />
+                <Line key={i-1} color="#00000050" />
               </>
             ))}
           </>

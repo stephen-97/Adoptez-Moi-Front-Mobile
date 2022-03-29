@@ -208,7 +208,6 @@ const AnimalFormView = (props) => {
         .then((response) => response.text())
         .then((jsonData) => {
           setLoading(false);
-          console.log(jsonData);
         });
     }
     return null;
@@ -660,5 +659,5 @@ const styles = StyleSheet.create({
   buttonExtraStyle: {
     position: "absolute",
     left: 150,
-  }
+  },
 });

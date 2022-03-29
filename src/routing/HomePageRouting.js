@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AnimalBigScreen from "../components/animalAnnonceComponents/AnimalBigScreen";
 import HomePage from "../screens/HomePage";
 import SpeciesPageView from "../components/homePageComponents/SpeciesPageView";
+import CommentBigScreen from "../components/animalAnnonceComponents/CommentBigScreen";
 
 const Stack = createStackNavigator();
 
@@ -31,6 +32,16 @@ const HomePageRouting = ({ navigation, route }) => {
             initialParams={{ navigation: navigation, routeLogin: route}}
             options={{
               animationEnabled: true,
+            }}
+          />
+          <Stack.Screen
+            headerMode="none"
+            name="CommentBigScreen"
+            component={CommentBigScreen}
+            options={{
+              headerShown: false,
+              animationEnabled: true,
+              cardStyle: { backgroundColor: "transparent" },
             }}
           />
         </Stack.Group>

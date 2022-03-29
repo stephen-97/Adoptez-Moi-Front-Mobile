@@ -16,14 +16,6 @@ import LoaderSpinner from "../utility/LoaderSpinner";
 import BottomMessage2 from "../utility/BottomMessage2";
 
 const LoginForm = (props) => {
-  async function save(key, value) {
-    try {
-      await SecureStore.setItemAsync(key, value);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const verificationValue = 2;
 
   const [user, setUser] = useState("");

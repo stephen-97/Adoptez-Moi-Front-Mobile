@@ -26,6 +26,7 @@ const HomePageView = (props) => {
   const scrollX = new Animated.Value(0);
   const position = Animated.divide(scrollX, width);
   const [data, setDataResponse] = useState([]);
+  const [randomAnimalsData, setRandomAnimalsData] = useState([]);
   const [speciesData, setSpeciesData] = useState({
     chien: 0,
     chat: 0,
@@ -69,11 +70,31 @@ const HomePageView = (props) => {
       });
   };
 
+  const getRandomsAnimals = () => {
+    const formData = new FormData();
+    formData.append("numberOfAnimal", 5);
+    fetch(`http://${SERVER.NAME}/wanted/randomAnimalOfAllSpecies/5`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((jsonData) => {
+        setRandomAnimalsData(jsonData);
+      });
+  };
+
   const isVisible = useIsFocused();
   useEffect(() => {
     sendData();
     getSpeciesData();
   }, [isVisible]);
+
+  useEffect(() => {
+    getRandomsAnimals();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -169,16 +190,48 @@ const HomePageView = (props) => {
           })}
         </View>
       </View>
+      <View style={styles.miniContainer}>
+        {data.length === 0 ? (
+          <Text style={styles.titreCarrousel}>Pas encore d'annonces disponibles </Text>
+        ) : (
+          <Text style={styles.titreCarrousel}>Annonces intéressantes </Text>
+        )}
+        <FlatList
+          ref={(ref) => (flatListRef = ref)}
+          data={randomAnimalsData}
+          keyExtractor={(item, index) => "key" + index}
+          horizontal
+          pagingEnabled
+          scrollEnabled
+          snapToAlignment="center"
+          scrollEventThrottle={16}
+          decelerationRate="fast"
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => {
+            return (
+              <>
+                <SliderBlockContent
+                  navigation={props.navigation}
+                  data={item}
+                  picture={{
+                    uri: `http://${SERVER.NAME}/upload/${item.images[0].name}`
+                  }}
+                  nom={item.name}
+                  espece={item.species}
+                  department={item.department}
+                />
+              </>
+            );
+          }}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+            {
+              useNativeDriver: false,
+            }
+          )}
+        />
+      </View>
       <Line color={COLORS.lightGray} />
-      {props.AuthProps.token ? (
-        <TouchableOpacity onPress={() => null} style={styles.buttonConnexion}>
-          <Text style={styles.textButton}>Déposer un avis</Text>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity onPress={() => null} style={styles.buttonConnexion}>
-          <Text style={styles.textButton}>Connexion</Text>
-        </TouchableOpacity>
-      )}
     </ScrollView>
   );
 };
@@ -195,7 +248,7 @@ const styles = StyleSheet.create({
   miniContainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 15,
+    marginTop: 15,
   },
   titreCarrousel: {
     fontSize: SIZES.h2,
@@ -237,5 +290,5 @@ const styles = StyleSheet.create({
     color: COLORS.darkgray,
     fontWeight: "bold",
     fontSize: 15,
-  }
+  },
 });

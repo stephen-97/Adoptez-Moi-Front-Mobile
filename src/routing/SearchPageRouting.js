@@ -2,7 +2,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import AnimalBigScreen from "../components/animalAnnonceComponents/AnimalBigScreen";
 import SearchPage from "../screens/SearchPage";
-import Filter from "../components/searchPageComponents/Filter";
+import CommentBigScreen from "../components/animalAnnonceComponents/CommentBigScreen";
 import Filter2 from "../components/searchPageComponents/Filter2";
 
 const Stack = createStackNavigator();
@@ -26,6 +26,16 @@ const SearchPageRouting = ({ navigation, route }) => {
           headerMode="none"
           name="AnimalBigScreen"
           component={AnimalBigScreen}
+          options={{
+            headerShown: false,
+            animationEnabled: true,
+            cardStyle: { backgroundColor: "transparent" },
+          }}
+        />
+        <Stack.Screen
+          headerMode="none"
+          name="CommentBigScreen"
+          component={CommentBigScreen}
           options={{
             headerShown: false,
             animationEnabled: true,

@@ -26,6 +26,8 @@ const question = require("../assets/icons/question.png");
 const magnifier = require("../assets/icons/magnifier.png");
 const home = require("../assets/icons/home.png");
 const profile = require("../assets/icons/profile.png");
+const heartChecked = require("../assets/icons/heart_1_.png");
+const heart = require("../assets/icons/heart(2).png");
 
 export default {
   back,
@@ -56,4 +58,6 @@ export default {
   magnifier,
   home,
   profile,
+  heart,
+  heartChecked,
 };

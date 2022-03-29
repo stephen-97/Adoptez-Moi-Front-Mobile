@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import SERVER from "../../../config";
 import { COLORS, SIZES } from "../../constants";
 import BottomMessage from "../utility/BottomMessage";
-import { refreshToken } from "../utility/functions";
+import { tokenDecode, refreshToken } from "../utility/functions";
 
 const DeleteAccountView = (props) => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -21,7 +21,7 @@ const DeleteAccountView = (props) => {
 
   const sendData = () => {
     const formData = new FormData();
-    formData.append("email", props.AuthProps.email);
+    formData.append("email", tokenDecode(props.AuthProps.token).email);
     formData.append("currentPassword", currentPassword);
     return fetch(`http://${SERVER.NAME}/login/authentification/deleteAccount`, {
       method: "POST",
@@ -143,7 +143,7 @@ export default connect(mapStateToProps)(DeleteAccountView);
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 50,
-    backgroundColor: COLORS.primary,
+    backgroundColor: COLORS.secondary,
     height: "100%",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,

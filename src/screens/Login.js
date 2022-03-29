@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Container, Content } from "native-base";
-
 import LoginForm from "../components/authentificationComponents/LoginForm";
 import HeaderNav from "../navigation/HeaderNav";
 

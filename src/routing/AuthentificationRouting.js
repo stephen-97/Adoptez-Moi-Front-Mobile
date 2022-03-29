@@ -10,9 +10,9 @@ const AuthentificationRouting = ({ navigation, route }) => {
   return (
     <React.Fragment key="AuthentificationNavigate">
       <Stack.Navigator
-        mode="modal"
         screenOptions={{
           headerShown: false,
+          presentation: "modal",
         }}
       >
         <Stack.Screen

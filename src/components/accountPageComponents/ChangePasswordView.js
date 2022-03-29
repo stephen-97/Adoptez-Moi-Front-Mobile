@@ -114,7 +114,6 @@ const ChangePassword = (props) => {
         setDataResponse(jsonData);
         setLoading(false);
         setClickedValue(true);
-        console.log(jsonData);
         if (jsonData.code) {
           setTimeout(() => {
             props.toggled(false);

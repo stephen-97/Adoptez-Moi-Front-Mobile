@@ -50,8 +50,8 @@ const AnimalListToUser = (props) => {
         </View>
       ) : null}
       {data.map((elem, i) => (
-        <>
-          <View style={styles.container} key={i}>
+        <View key={i}>
+          <View style={styles.container}>
             <Image
               style={styles.image}
               source={{
@@ -66,7 +66,7 @@ const AnimalListToUser = (props) => {
             />
           </View>
           <Line color="rgba(255,255,255,255.3)" />
-        </>
+        </View>
       ))}
     </>
   );

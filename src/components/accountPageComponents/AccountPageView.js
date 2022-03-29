@@ -86,7 +86,7 @@ const AccountPageView = (props) => {
 
   const [toggledEmail, setToggledEmail] = useState(false);
   const [toggled, setToggled] = useState(false);
-  //const [data, setData] = useState({user :"", email: ""})
+  
   let data = {
     user: "",
     email: "",
@@ -125,6 +125,20 @@ const AccountPageView = (props) => {
             style={styles.buttonCreateAvis}
           >
             <Text style={styles.textButton}>Créer une annonce</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.blockMessage}>
+          <TouchableOpacity
+            onPress={() => props.navigation.push("FavoritesAnimals")}
+            style={styles.basicButton}
+          >
+            <Text style={styles.textButton}>Favoris</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => props.navigation.push("UsersMessages")}
+            style={styles.basicButton}
+          >
+            <Text style={styles.textButton}>Messages</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.block}>
@@ -302,6 +316,12 @@ const styles = StyleSheet.create({
   block: {
     paddingVertical: 20,
   },
+  blockMessage: {
+    paddingVertical: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
   buttonCreateAvis: {
     alignItems: "center",
     alignSelf: "center",
@@ -309,6 +329,15 @@ const styles = StyleSheet.create({
     padding: SIZES.padding2,
     backgroundColor: COLORS.tertiary,
     borderRadius: 5,
+  },
+  basicButton: {
+    width: 150,
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    padding: SIZES.padding2,
+    backgroundColor: COLORS.tertiary,
+    borderRadius: 10,
   },
   textButton: {
     fontSize: SIZES.h2,

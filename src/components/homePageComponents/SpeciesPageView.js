@@ -51,6 +51,7 @@ const SpeciesPageView = (props) => {
     )
       .then((response) => response.json())
       .then((jsonData) => {
+        console.log("test");
         setAnnonces(jsonData);
         setIsLoading(isLoading + 1);
       });
@@ -189,6 +190,12 @@ const SpeciesPageView = (props) => {
                       species={elem.species}
                       name={elem.name}
                       image={`http://${SERVER.NAME}/upload/${elem.images[0].name}`}
+                      onPress={() => {
+                        props.navigation.navigate("AnimalBigScreen", {
+                          data: elem,
+                          navigation: props.navigation,
+                        });
+                      }}
                     />
                   </>
                 ))}

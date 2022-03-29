@@ -43,24 +43,23 @@ const AlerteInfo = (props) => {
 
   const renderOthersAnimalFromUser = (elem, i) => {
     return (
-      <>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.block}
-          onPress={() => checkAnimal(elem)}
-        >
-          <View>
-            <Image
-              style={styles.image}
-              source={{
-                uri: `http://${SERVER.NAME}/upload/${data[i].images[0].name}`,
-              }}
-            />
-            <Text style={styles.name}>{data[i].name}</Text>
-            <Text style={styles.specie}>{data[i].species}</Text>
-          </View>
-        </TouchableOpacity>
-      </>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        style={styles.block}
+        onPress={() => checkAnimal(elem)}
+        key={i}
+      >
+        <View>
+          <Image
+            style={styles.image}
+            source={{
+              uri: `http://${SERVER.NAME}/upload/${data[i].images[0].name}`,
+            }}
+          />
+          <Text style={styles.name}>{data[i].name}</Text>
+          <Text style={styles.specie}>{data[i].species}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
