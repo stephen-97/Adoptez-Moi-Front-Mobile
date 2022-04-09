@@ -117,10 +117,6 @@ const AnimalInfo = (props) => {
         </View>
 
         <Line color="rgba(0,0,0,0.3)" />
-
-        <View style={styles.buttonView}>
-          <Button name="Voir localisation" onPress={() => null} />
-        </View>
       </ScrollView>
     </>
   );

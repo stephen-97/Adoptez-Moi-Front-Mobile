@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   connexionTitleText: {
     fontSize: SIZES.h2,
     textAlign: "center",
-    color: "white",
+    color: "black",
   },
   content: {
     padding: 10,

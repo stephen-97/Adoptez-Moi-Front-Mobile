@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { View, StyleSheet, UIManager, Platform, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  UIManager,
+  Platform,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { COLORS, SIZES, icons } from "../../constants";
-import Animal from "../searchPageComponents/Animal";
 import Line from "../utility/Line";
 import SERVER from "../../../config";
 import LoaderSpinner from "../utility/LoaderSpinner";
@@ -15,12 +23,17 @@ if (
 }
 
 const MessagePageView = (props) => {
- 
   const [data, setData] = useState([]);
-    
+
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (checkIfAllCommentsAreViewed()) {
+      sendUserViewedTheMessages();
+    }
+  }, [data]);
 
   const getData = () => {
     return fetch(`http://${SERVER.NAME}/comments/getNotViewedQuestion`, {
@@ -37,6 +50,43 @@ const MessagePageView = (props) => {
       });
   };
 
+  const sendUserViewedTheMessages = () => {
+    return fetch(`http://${SERVER.NAME}/comments/userViewedTheMessages`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: props.AuthProps.token,
+      },
+    }).then((response) => response.json());
+  };
+
+  const test = (elem) => {
+    if (elem.answers.length === 0 && elem.answer_to) return "alreadyAnswered";
+    if (elem.answers.length > 0) return "alreadyAnswered";
+    if (elem.answers.length === 0 && elem.answer_to === undefined)
+      return "answer";
+    if (elem.answer_to) return "alreadyAnswered";
+    return "answer";
+  };
+
+  const messageBlockStyle = (elem) => {
+    if (elem.answers.length === 0 && elem.answer_to)
+      return styles.contentAnswered;
+    if (elem.answers.length > 0) return styles.contentAnswered;
+    if (elem.answers.length === 0 && elem.answer_to === undefined)
+      return styles.content;
+    if (elem.answer_to) return styles.contentAnswered;
+    return styles.content;
+  };
+
+  const checkIfAllCommentsAreViewed = () => {
+    for (let i = 0; i < data.length; i++) {
+      if (!data[i].is_read) return true;
+    }
+    return false;
+  };
+
   return (
     <ScrollView>
       {data.map((elem, i) => (
@@ -46,14 +96,12 @@ const MessagePageView = (props) => {
             props.navigation.push("CommentBigScreen", {
               data: elem,
               navigation: props.navigation,
-              type: elem.answers.length === 0 && elem.answer_to.length === 0 ? "answer" : "alreadyAnswered",
+              type: test(elem),
               questionOrResponse: "response",
             })
           }
           activeOpacity={1}
-          style={
-            elem.answers.length === 0 ? styles.content : styles.contentAnswered
-          }
+          style={messageBlockStyle(elem)}
         >
           <View style={styles.animalNameAndImageContent}>
             <Text style={styles.animalName}>{elem.animal.name}</Text>
@@ -154,5 +202,5 @@ const styles = StyleSheet.create({
     right: 15,
     color: COLORS.darkgray,
     fontSize: 22,
-  }
+  },
 });

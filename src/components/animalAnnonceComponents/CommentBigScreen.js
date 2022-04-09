@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
-  Animated,
   View,
   Text,
   StyleSheet,
-  Image,
   Dimensions,
-  FlatList,
-  TouchableOpacity,
   TextInput,
-  Keyboard,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
 import { COLORS, icons, SIZES } from "../../constants";
@@ -18,6 +13,7 @@ import SERVER from "../../../config";
 import CloseModal from "../utility/CloseModalButton";
 import Button from "../utility/Button";
 import LoaderSpinner from "../utility/LoaderSpinner";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -84,7 +80,7 @@ const AnimalBigScreen = (props) => {
         <ScrollView>
           {props.route.params.type === "question" ? (
             <Text style={styles.title}>
-              Question à posez au propriétaire de {props.route.params.data.name}
+              Posez votre question au propriétaire de {props.route.params.data.name}
             </Text>
           ) : null}
           {props.route.params.type === "answer" ? (
@@ -106,13 +102,13 @@ const AnimalBigScreen = (props) => {
                     le propriétaire {props.route.params.data.sender.username} a
                     répondu à votre question
                   </Text>
-                  <Text>Question</Text>
+                  <Text style={styles.subTitle}>Question</Text>
                   <View style={styles.questionContainer}>
                     <Text style={styles.question}>
                       {props.route.params.data.answer_to.content}
                     </Text>
                   </View>
-                  <Text>Réponse</Text>
+                  <Text style={styles.subTitle}>Réponse</Text>
                   <View style={styles.responseContainer}>
                     <Text style={styles.responseToAnswer}>
                       {props.route.params.data.content}
@@ -121,16 +117,22 @@ const AnimalBigScreen = (props) => {
                 </>
               ) : (
                 <>
-                   <Text style={styles.title}>
+                  <Text style={styles.title}>
                     Question de {props.route.params.data.sender.username} déjà
                     répondu :
                   </Text>
-                  <Text style={styles.question}>
-                    {props.route.params.data.content}
-                  </Text>
-                  <Text style={styles.responseToAnswer}>
-                    {props.route.params.data.answers[0].content}
-                  </Text>
+                  <Text style={styles.subTitle}>Question</Text>
+                  <View style={styles.questionContainer}>
+                    <Text style={styles.question}>
+                      {props.route.params.data.content}
+                    </Text>
+                  </View>
+                  <Text style={styles.subTitle}>Votre réponse</Text>
+                  <View style={styles.responseContainer}>
+                    <Text style={styles.responseToAnswer}>
+                      {props.route.params.data.answers.length > 0 ? props.route.params.data.answers[0].content : null}
+                    </Text>
+                  </View>
                 </>
               )}
             </>
@@ -148,7 +150,7 @@ const AnimalBigScreen = (props) => {
                     showSoftInputOnFocus={false}
                     onChangeText={(e) => setContent(e)}
                   />
-                  <View style={{ top: 200 }}>
+                  <View style={{ marginTop: 40 }}>
                     <Button
                       name="Soumettre"
                       onPress={() => questionOrResponse()}
@@ -181,7 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     paddingVertical: 20,
-    top: 150,
+    marginTop: 80,
   },
   title: {
     alignSelf: "center",
@@ -200,7 +202,6 @@ const styles = StyleSheet.create({
     padding: 10,
     overflow: "hidden",
     width: "90%",
-    marginTop: 20,
   },
   question: {
     color: "white",
@@ -219,6 +220,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: SIZES.h3,
   },
+  subTitle: {
+    marginTop: 30,
+    padding: 10,
+    fontSize: SIZES.h3,
+    marginLeft: 10,
+  }
 });
 
 const mapStateToProps = (state) => {

@@ -28,6 +28,8 @@ const home = require("../assets/icons/home.png");
 const profile = require("../assets/icons/profile.png");
 const heartChecked = require("../assets/icons/heart_1_.png");
 const heart = require("../assets/icons/heart(2).png");
+const heartWhite = require("../assets/icons/heartWhite.png");
+const messager = require("../assets/icons/messager.png");
 
 export default {
   back,
@@ -60,4 +62,6 @@ export default {
   profile,
   heart,
   heartChecked,
+  messager,
+  heartWhite,
 };

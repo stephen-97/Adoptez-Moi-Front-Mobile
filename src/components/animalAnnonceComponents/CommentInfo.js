@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import { connect } from "react-redux";
 import { COLORS, SIZES, icons } from "../../constants";
 import SERVER from "../../../config";
 import Button from "../utility/Button";
+import { tokenDecode } from "../utility/functions";
 
 const CommentsInfo = (props) => {
   const [data, setData] = useState([]);
@@ -37,20 +39,28 @@ const CommentsInfo = (props) => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 20, height: "100%" }}>
-      <Button
-        name="Posez une question"
-        onPress={() => props.navigation.push("CommentBigScreen", {
-            data: props.data,
-            navigation: props.navigation,
-            type: "question",
-            questionOrResponse: "question",
-          })
-        }
-      />
+    <ScrollView contentContainerStyle={{ padding: 20 }}>
+      {props.data._user.username && props.AuthProps.token? (
+        <>
+          {props.data._user.username !==
+          tokenDecode(props.AuthProps.token).user ? (
+            <Button
+              name="Posez une question"
+              onPress={() =>
+                props.navigation.push("CommentBigScreen", {
+                  data: props.data,
+                  navigation: props.navigation,
+                  type: "question",
+                  questionOrResponse: "question",
+                })
+              }
+            />
+          ) : null}
+        </>
+      ) : null}
       {comments.length === 0 ? (
-        <View style={{ height: "75%", justifyContent: "center" }}>
-          <Text style={styles.noQuestion}>(Aucunes questions posté)</Text>
+        <View style={{ justifyContent: "center", marginTop: 20 }}>
+          <Text style={styles.noQuestion}>(Aucunes questions postés)</Text>
         </View>
       ) : null}
       {comments ? (
@@ -67,7 +77,6 @@ const CommentsInfo = (props) => {
                     }}
                   />
                   <Text style={styles.content}>{elem.content}</Text>
-                  <Text style={styles.responseButton}>Répondre</Text>
                 </View>
               ) : null}
               {elem.answers.length > 0 ? (
@@ -132,7 +141,14 @@ const styles = StyleSheet.create({
     fontSize: SIZES.h2,
     alignSelf: "center",
     marginTop: 15,
-  }
+  },
 });
 
-export default CommentsInfo;
+const mapStateToProps = (state) => {
+  return {
+    AuthProps: state.AuthentificationReducer,
+    DeleteAnimalProps: state.DeleteAnimalReducer,
+  };
+};
+
+export default connect(mapStateToProps)(CommentsInfo);

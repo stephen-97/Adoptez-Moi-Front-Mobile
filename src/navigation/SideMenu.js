@@ -17,6 +17,7 @@ import AccountPageRouting from "../routing/AccountPageRouting";
 import HomePageRouting from "../routing/HomePageRouting";
 import Faq from "../screens/Faq";
 import { tokenDecode } from "../components/utility/functions";
+import Line from "../components/utility/Line";
 import AdminPage from "../screens/AdminPage";
 
 const Drawern = createDrawerNavigator();
@@ -27,7 +28,6 @@ const mapStateToProps = (state) => {
     AuthProps: state.AuthentificationReducer,
   };
 };
-
 
 
 function DrawerContent(props) {
@@ -45,6 +45,13 @@ function DrawerContent(props) {
       authentificationProps: { code: false },
     };
     props.dispatch(action);
+  };
+
+  const userHaveNewMessages = () => {
+    if (props.AuthProps.token) {
+      if (tokenDecode(props.AuthProps.token).newMessages) return true;
+    }
+    return false;
   };
 
   return (
@@ -79,12 +86,13 @@ function DrawerContent(props) {
             <View style={[styles.touchableItemsAccount]}>
               <Text style={[styles.size_text_nav_bar]}>Page de compte</Text>
               <Image style={styles.icon} source={icons.profile} />
+              {userHaveNewMessages() ? <View style={styles.redPoint}></View> : null}
               <Image style={styles.arrow_icon} source={icons.arrowFwd} />
             </View>
           </TouchableOpacity>
         ) : null}
 
-        <View style={styles.line}></View>
+        <Line color="gray" />
 
         <TouchableOpacity
           style={styles.touchableItems}
@@ -97,7 +105,7 @@ function DrawerContent(props) {
           <Image style={styles.arrow_icon} source={icons.arrowFwd} />
         </TouchableOpacity>
 
-        <View style={styles.line}></View>
+        <Line color="gray" />
 
         {props.AuthProps.token ? (
           <React.Fragment key={"authIsTrue"}>
@@ -114,6 +122,7 @@ function DrawerContent(props) {
                   <Image style={styles.arrow_icon} source={icons.arrowFwd} />
                   <Image style={styles.icon} source={icons.profile} />
                 </TouchableOpacity>
+                <Line color="gray" />
               </>
             ) : null}
           </React.Fragment>
@@ -131,10 +140,11 @@ function DrawerContent(props) {
               <Image style={styles.arrow_icon} source={icons.arrowFwd} />
             </TouchableOpacity>
 
+            <Line color="gray" />
+
           </React.Fragment>
         )}
 
-        <View style={styles.line}></View>
 
         <TouchableOpacity
           style={styles.touchableItems}
@@ -147,7 +157,7 @@ function DrawerContent(props) {
           <Image style={styles.arrow_icon} source={icons.arrowFwd} />
         </TouchableOpacity>
 
-        <View style={styles.line}></View>
+        <Line color="gray" />
 
         <TouchableOpacity
           style={styles.touchableItems}
@@ -160,7 +170,7 @@ function DrawerContent(props) {
           <Image style={styles.arrow_icon} source={icons.arrowFwd} />
         </TouchableOpacity>
 
-        <View style={styles.line}></View>
+        <Line color="gray" />
       </View>
       {props.AuthProps.token ? (
         <Text
@@ -221,6 +231,16 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.secondary,
     flex: 1,
     borderColor: "rgba(0,0,0,1)",
+  },
+  redPoint: {
+    width: 12,
+    height: 12,
+    position: "absolute",
+    backgroundColor: "red",
+    zIndex: 1,
+    borderRadius: 50,
+    top: 7,
+    left: 43,
   },
   drawerGlobalView: {
     marginTop: 71,

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Header, Body, Title } from "native-base";
-import { Image, StyleSheet, TouchableHighlight } from "react-native";
+import { Image, View, StyleSheet, TouchableHighlight } from "react-native";
 import { COLORS } from "../constants/theme";
 import icons from "../constants/icons";
+import { tokenDecode } from "../components/utility/functions";
 import SliderAccountLogo from "../components/authentificationComponents/SliderAccountLogo";
 
 const imageContainerHeight = 40;
@@ -13,6 +14,13 @@ const HeaderNav = (props) => {
   const sideMenuAccount = props.NavAccount;
 
   const [toggled, setToggled] = useState(false);
+
+  const userHaveNewMessages = () => {
+    if (props.AuthProps.token) {
+      if (tokenDecode(props.AuthProps.token).newMessages) return true;
+    }
+    return false;
+  };
 
   return (
     <>
@@ -38,7 +46,10 @@ const HeaderNav = (props) => {
             style={styles.imageContainerNav}
             onPress={() => sideMenu.toggleDrawer()}
           >
-            <Image style={styles.imageNav} source={icons.mobileNavIcon} />
+            <>
+              <Image style={styles.imageNav} source={icons.mobileNavIcon} />
+              {userHaveNewMessages() ? <View style={styles.redPoint}></View> : null}
+            </>
           </TouchableHighlight>
           <Title style={styles.title}>{props.name}</Title>
         </Body>
@@ -105,6 +116,16 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
     zIndex: 1,
-    transform: [{translateX: '-40'}]
+    transform: [{ translateX: "-40" }],
+  },
+  redPoint: {
+    width: 12,
+    height: 12,
+    position: "absolute",
+    backgroundColor: "red",
+    zIndex: 1,
+    borderRadius: 50,
+    top: -3,
+    right: -3,
   },
 });

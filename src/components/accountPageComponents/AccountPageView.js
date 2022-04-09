@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import {
@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { COLORS, SIZES, icons } from "../../constants";
-import { tokenDecode } from "../utility/functions";
+import { tokenDecode, userHaveNewMessages } from "../utility/functions";
 import { convertDateTime, convertDBDate } from "../utility/functions";
 import * as ImagePicker from "expo-image-picker";
 import { refreshToken } from "../utility/functions";
@@ -32,6 +32,7 @@ if (
 }
 
 const AccountPageView = (props) => {
+  const firstUpdate = useRef(true);
   const isEmpty = (obj) => {
     return Object.keys(obj).length === 0;
   };
@@ -78,6 +79,8 @@ const AccountPageView = (props) => {
       .then((response) => response.json())
       .then((jsonData) => {
         if (jsonData.status === 200) {
+          //refreshToken(props);
+          console.log("hey3");
           changeStoreAuth(jsonData);
           setDataResponse(jsonData);
         }
@@ -86,7 +89,7 @@ const AccountPageView = (props) => {
 
   const [toggledEmail, setToggledEmail] = useState(false);
   const [toggled, setToggled] = useState(false);
-  
+
   let data = {
     user: "",
     email: "",
@@ -110,10 +113,13 @@ const AccountPageView = (props) => {
     }
   }, [props.AuthProps]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
     changeAvatar();
   }, [avatar]);
-
 
   return (
     <>
@@ -132,13 +138,22 @@ const AccountPageView = (props) => {
             onPress={() => props.navigation.push("FavoritesAnimals")}
             style={styles.basicButton}
           >
-            <Text style={styles.textButton}>Favoris</Text>
+            <>
+              <Text style={styles.textButton}>Favoris</Text>
+              <Image style={styles.firstIcons} source={icons.heartWhite} />
+            </>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => props.navigation.push("UsersMessages")}
             style={styles.basicButton}
           >
-            <Text style={styles.textButton}>Messages</Text>
+            <>
+              <Text style={styles.textButton}>Messages</Text>
+              <View>
+                <Image style={styles.firstIcons} source={icons.messager} />
+                {userHaveNewMessages(props) ? <View style={styles.redPoint}></View> : null}
+              </View>
+            </>
           </TouchableOpacity>
         </View>
         <View style={styles.block}>
@@ -221,41 +236,6 @@ const AccountPageView = (props) => {
                     LayoutAnimation.configureNext(
                       LayoutAnimation.Presets.easeInEaseOut
                     );
-                    setToggledEmail(!toggledEmail);
-                  }}
-                  style={styles.toggleTouchable}
-                >
-                  <Text
-                    style={[styles.valueResponse, { color: COLORS.tertiary }]}
-                  >
-                    Modifier adresse mail
-                  </Text>
-                  <Image
-                    style={
-                      toggledEmail
-                        ? [
-                            styles.arrow_icon,
-                            { transform: [{ rotate: "-90deg" }] },
-                          ]
-                        : [
-                            styles.arrow_icon,
-                            { transform: [{ rotate: "90deg" }] },
-                          ]
-                    }
-                    source={icons.arrowFwd}
-                  />
-                </TouchableOpacity>
-                {toggledEmail ? <ChangeEmailView toggled={setToggled} /> : null}
-              </View>
-
-            
-              <View style={styles.line}></View>
-              <View style={styles.valuesViewColumn}>
-                <TouchableOpacity
-                  onPress={() => {
-                    LayoutAnimation.configureNext(
-                      LayoutAnimation.Presets.easeInEaseOut
-                    );
                     setToggled(!toggled);
                   }}
                   style={styles.toggleTouchable}
@@ -331,13 +311,14 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   basicButton: {
-    width: 150,
+    width: 170,
     alignItems: "center",
     alignSelf: "center",
-    justifyContent: "center",
+    justifyContent: "space-around",
     padding: SIZES.padding2,
     backgroundColor: COLORS.tertiary,
     borderRadius: 10,
+    flexDirection: "row",
   },
   textButton: {
     fontSize: SIZES.h2,
@@ -416,5 +397,19 @@ const styles = StyleSheet.create({
   avatarText2: {
     color: COLORS.tertiary,
     fontSize: SIZES.h4,
+  },
+  firstIcons: {
+    height: 30,
+    width: 30,
+  },
+  redPoint: {
+    width: 12,
+    height: 12,
+    position: "absolute",
+    backgroundColor: "red",
+    zIndex: 1,
+    borderRadius: 50,
+    top: -3,
+    right: -3,
   },
 });

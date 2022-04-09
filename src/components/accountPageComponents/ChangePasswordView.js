@@ -53,7 +53,6 @@ const ChangePassword = (props) => {
     setNewPasswordEquals(1);
     setDataResponse([]);
     setClickedValue(false);
-    refreshToken(props);
     setLoading(false);
   }, [isVisible]);
   const checkTextInput = () => {

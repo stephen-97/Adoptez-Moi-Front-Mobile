@@ -62,7 +62,6 @@ export const refreshToken = (props) => {
   })
     .then((response) => response.json())
     .then((jsonData) => {
-      console.log(jsonData!==false);
       if (jsonData.status !== false) {
         changeStoreAuth(jsonData);
       } else {
@@ -78,6 +77,13 @@ export const responseManager = (response, props) => {
       props.navigation.navigate("homePage");
     }
   }
+};
+
+export const userHaveNewMessages = (props) => {
+  if (props.AuthProps.token) {
+    if (tokenDecode(props.AuthProps.token).newMessages) return true;
+  }
+  return false;
 };
 
 export const convertDBDate = (date) => {
