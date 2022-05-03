@@ -16,7 +16,7 @@ import Button from "../utility/Button";
 import { COLORS, SIZES, icons } from "../../constants";
 import InputRange from "../utility/InputRange";
 
-const AnimalList2 = (props) => {
+const AnimalList2 = (props) => { 
 
   const [data, setData] = useState({ items: [] });
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,6 +24,14 @@ const AnimalList2 = (props) => {
   const scrollRef = useRef();
   const [lastPage, setLastPage] = useState(1);
   const [isloaded, setIsLoaded] = useState(false);
+
+  const changeStoreAnimalAdmin = (value) => {
+    const action = {
+      type: "DELETE_ADMIN_ANIMAL_PROPS",
+      dataAnimalAdminforDeleting: value,
+    };
+    props.dispatch(action);
+  };
 
   const formDataBuild = () => {
     const formData = new FormData();
@@ -77,7 +85,10 @@ const AnimalList2 = (props) => {
       y: 0,
       animated: false,
     });
-  }, [currentPage, props.FilterData, isVisible]);
+    if (props.DeleteAnimalAdminProps === true) {
+      changeStoreAnimalAdmin(false);
+    }
+  }, [currentPage, props.FilterData, isVisible, props.DeleteAnimalProps===true]);
 
   const styleColorPrev = () => {
     if (currentPage === 1) {
@@ -164,11 +175,7 @@ const AnimalList2 = (props) => {
             <Text>{data.total_count} annonces trouvées</Text>
             {data.items.map((elem, i) => (
               <>
-                <Animal
-                  key={i+1}
-                  navigation={props.navigation}
-                  data={elem}
-                />
+                <Animal key={i+1} navigation={props.navigation} data={elem}/>
                 <Line key={i-1} color="#00000050" />
               </>
             ))}
@@ -218,6 +225,7 @@ const AnimalList2 = (props) => {
 const mapStateToProps = (state) => {
   return {
     FilterData: state.FilterReducer,
+    DeleteAnimalProps: state.DeleteAnimalReducer,
   };
 };
 

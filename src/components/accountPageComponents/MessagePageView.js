@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { COLORS, SIZES, icons } from "../../constants";
+import { refreshToken } from "../utility/functions";
 import Line from "../utility/Line";
 import SERVER from "../../../config";
 import LoaderSpinner from "../utility/LoaderSpinner";
@@ -33,6 +34,7 @@ const MessagePageView = (props) => {
     if (checkIfAllCommentsAreViewed()) {
       sendUserViewedTheMessages();
     }
+    sendUserViewedTheMessages();
   }, [data]);
 
   const getData = () => {
@@ -58,7 +60,13 @@ const MessagePageView = (props) => {
         "Content-Type": "application/json",
         Authorization: props.AuthProps.token,
       },
-    }).then((response) => response.json());
+    })
+      .then((response) => response.json())
+      .then((jsonData) => {
+        if (jsonData.status === "200") {
+          refreshToken(props);
+        }
+      });
   };
 
   const test = (elem) => {

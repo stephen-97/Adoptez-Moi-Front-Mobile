@@ -4,6 +4,7 @@ import AnimalBigScreen from "../components/animalAnnonceComponents/AnimalBigScre
 import SearchPage from "../screens/SearchPage";
 import CommentBigScreen from "../components/animalAnnonceComponents/CommentBigScreen";
 import Filter2 from "../components/searchPageComponents/Filter2";
+import AdminDeleteAnimal from "../components/adminPageComponents/AdminDeleteAnimal";
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,16 @@ const SearchPageRouting = ({ navigation, route }) => {
           headerMode="none"
           name="AnimalBigScreen"
           component={AnimalBigScreen}
+          options={{
+            headerShown: false,
+            animationEnabled: true,
+            cardStyle: { backgroundColor: "transparent" },
+          }}
+        />
+        <Stack.Screen
+          headerMode="none"
+          name="AdminDeleteAnimal"
+          component={AdminDeleteAnimal}
           options={{
             headerShown: false,
             animationEnabled: true,

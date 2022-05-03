@@ -5,6 +5,12 @@
     "name": "avis-R-animaux",
     "slug": "avis-R-animaux",
     "version": "1.0.0",
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": ["**/*"],
+    "splash": {
+      "image": "./src/assets/icons/account_logo.png"
+    },
+    "ios": {
+      "requireFullScreen": true,
+    }  
   }
 }

@@ -77,7 +77,7 @@ const RegistrationForm = (props) => {
 
   const checkTextInput = () => {
     let i = 0;
-
+    console.log(password);
     if (!email.trim()) {
       setEmailEmpty(true);
     } else {
@@ -221,6 +221,7 @@ const RegistrationForm = (props) => {
       <View style={styles.connect}>
         <View style={styles.connexionTitle}>
           <Text style={styles.connexionTitleText}>Création d'un compte</Text>
+          <InterrogationPNG />
         </View>
         <View>
           <View style={styles.inputBlock}>
@@ -317,7 +318,6 @@ const RegistrationForm = (props) => {
           >
             <Text style={styles.textButtonForm}>Valider</Text>
           </TouchableOpacity>
-          <InterrogationPNG></InterrogationPNG>
           {loading ? <LoaderSpinner /> : null}
           {clicked ? (
             <BottomMessage2
@@ -453,10 +453,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   imageContainer: {
-    height: 40,
-    width: 40,
+    height: 30,
+    width: 30,
     position: "absolute",
-    bottom: 30,
+    transform: [{ translateY: -5 }],
+    top: "50%",
     right: 30,
   },
   imageNav: {

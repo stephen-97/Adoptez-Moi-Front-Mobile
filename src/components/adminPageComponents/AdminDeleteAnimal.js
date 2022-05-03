@@ -32,14 +32,13 @@ const AnimalDeleteAnimal = (props) => {
   const animValue = useRef(new Animated.Value(-550)).current;
   const animValueOpacity = useRef(new Animated.Value(0)).current;
 
-  const changeStoreAnimal = (value) => {
+  const changeStoreAnimalAdmin = (value) => {
     const action = {
-      type: "DELETE_ANIMAL_PROPS",
-      dataAnimalforDeleting: value,
+      type: "DELETE_ADMIN_ANIMAL_PROPS",
+      dataAnimalAdminforDeleting: value,
     };
     props.dispatch(action);
   };
-
 
   const deleteUserAnimal = () => {
     setIsLoading(true);
@@ -58,9 +57,9 @@ const AnimalDeleteAnimal = (props) => {
       .then((jsonData) => {
         setDataResponse(jsonData);
         setIsLoading(false);
-        if (jsonData.status !== 400) {
+        if (jsonData.status === 200) {
+          changeStoreAnimalAdmin(true);
           setResponseBlock(true);
-        } else {
           setIsDeleted(true);
         }
       });
@@ -91,11 +90,13 @@ const AnimalDeleteAnimal = (props) => {
       duration: 400,
       useNativeDriver: false,
     }).start(() => {
-      if (isDeleted){
-        changeStoreAnimal(props.route.params.data);
-        return props.navigation.goBack(null);
+      if (isDeleted) {
+        return props.navigation.navigate("AnimalBigScreen", {
+          data: props.route.params.data,
+          deletedFromAdmin: true,
+        });
       }
-      return props.navigation.goBack(null);
+      return props.navigation.goBack();
     });
   };
 
@@ -153,7 +154,7 @@ const AnimalDeleteAnimal = (props) => {
 const mapStateToProps = (state) => {
   return {
     AuthProps: state.AuthentificationReducer,
-    DeleteAnimalProps: state.DeleteAnimalReducer,
+    DeleteAnimalAdminReducer: state.DeleteAnimalAdminReducer,
   };
 };
 
@@ -161,9 +162,9 @@ export default connect(mapStateToProps)(AnimalDeleteAnimal);
 
 const styles = StyleSheet.create({
   fullContainer: {
+    top: 0,
     height: "100%",
     width: "100%",
-    backgroundColor: "black",
     alignItems: "center",
     justifyContent: "center",
   },

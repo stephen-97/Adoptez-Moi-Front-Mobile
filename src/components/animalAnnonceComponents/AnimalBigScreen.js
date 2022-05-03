@@ -71,6 +71,10 @@ const AnimalBigScreen = (props) => {
     if (props.AuthProps.token) checkIfThisAnimalIsOnFavorite();
   }, []);
 
+  useEffect(() => {
+    if (props.route.params.deletedFromAdmin) props.navigation.goBack();
+  }, [props.route.params.deletedFromAdmin]);
+
   return (
     <View style={styles.container}>
       {props.AuthProps.token ? (
@@ -88,7 +92,7 @@ const AnimalBigScreen = (props) => {
             <TouchableOpacity
               style={styles.deleteAdmin}
               onPress={() =>
-                props.navigation.push("AnimalDeleteAdmin", {
+                props.navigation.push("AdminDeleteAnimal", {
                   data: props.route.params.data,
                 })
               }

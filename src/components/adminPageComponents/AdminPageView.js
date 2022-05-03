@@ -21,10 +21,20 @@ const AdminPageView = (props) => {
   const [searchUsername, setSearchUsername] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const changeStoreUserAdmin = (value) => {
+    const action = {
+      type: "DELETE_ADMIN_USER_PROPS",
+      dataUserAdminforDeleting: value,
+    };
+    props.dispatch(action);
+  };
+
   useEffect(() => {
+    if (props.DeleteUserAdminProps) changeStoreUserAdmin(false);
     setPage(1);
-    if (page === 1) getAllUserFromApi2();
-  }, [searchUsername]);
+    if (page === 1 || props.DeleteUserAdminProps) getAllUserFromApi2();
+    console.log("hey")
+  }, [searchUsername, props.DeleteUserAdminProps === true]);
 
   useEffect(() => {
     if (page !== 1) getAllUserFromApi();
@@ -137,6 +147,7 @@ const mapStateToProps = (state) => {
   return {
     AuthProps: state.AuthentificationReducer,
     DeleteAnimalProps: state.DeleteAnimalReducer,
+    DeleteUserAdminProps: state.DeleteUserAdminReducer,
   };
 };
 

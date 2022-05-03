@@ -59,10 +59,10 @@ const AccountPageView = (props) => {
     setAvatar(null);
   };
 
-  const changeStoreAuth = (data) => {
+  /**const changeStoreAuth = (data) => {
     const action = { type: "AUTH_PROPS", authentificationProps: data };
     props.dispatch(action);
-  };
+  };**/
 
   const changeAvatar = () => {
     const formData = new FormData();
@@ -79,9 +79,8 @@ const AccountPageView = (props) => {
       .then((response) => response.json())
       .then((jsonData) => {
         if (jsonData.status === 200) {
-          //refreshToken(props);
-          console.log("hey3");
-          changeStoreAuth(jsonData);
+          refreshToken(props);
+          //changeStoreAuth(jsonData);
           setDataResponse(jsonData);
         }
       });

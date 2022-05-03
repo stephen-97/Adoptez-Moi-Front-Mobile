@@ -231,7 +231,7 @@ const HomePageView = (props) => {
           )}
         />
       </View>
-      <Line color={COLORS.lightGray} />
+      <View style={{ height: 20 }}></View>
     </ScrollView>
   );
 };

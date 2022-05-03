@@ -39,6 +39,7 @@
     "react-native-paper": "^4.8.1",
     "react-native-pod": "^1.12.1",
     "react-native-screens": "~3.0.0",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^12.1.1",
     "react-navigation": "^4.4.4",
     "react-redux": "^7.2.4",

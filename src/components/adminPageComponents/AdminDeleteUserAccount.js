@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import {
+  View,
   StyleSheet,
   Text,
-  View,
-  Image,
+  Keyboard,
   Animated,
   TouchableOpacity,
 } from "react-native";
@@ -12,21 +12,35 @@ import { connect } from "react-redux";
 import SERVER from "../../../config";
 import MiniButton from "../utility/MiniButton";
 import Line from "../utility/Line";
+import LoaderSpinner from "../utility/LoaderSpinner";
 import { COLORS, SIZES } from "../../constants";
 import { TextInput } from "react-native-gesture-handler";
 import Button from "../utility/Button";
 
 const AnimalDeleteUserAccount = (props) => {
+  const [reasonOfBan, setReasonOfBan] = useState("");
   const isVisible = useIsFocused();
+  const [isLoading, setIsLoading] = useState(false);
   const [touchable, setTouchable] = useState(false);
+  const [dataResponse, setDataResponse] = useState({status: null});
+
+
   useEffect(() => {}, []);
 
   const animValue = useRef(new Animated.Value(-550)).current;
   const animValueOpacity = useRef(new Animated.Value(0)).current;
 
+  const changeStoreUserAdmin = (value) => {
+    const action = {
+      type: "DELETE_ADMIN_USER_PROPS",
+      dataUserAdminforDeleting: value,
+    };
+    props.dispatch(action);
+  };
+
   useEffect(() => {
     Animated.timing(animValue, {
-      toValue: 250,
+      toValue: 320,
       duration: 400,
       useNativeDriver: false,
     }).start();
@@ -48,7 +62,38 @@ const AnimalDeleteUserAccount = (props) => {
       toValue: 0,
       duration: 400,
       useNativeDriver: false,
-    }).start(() => props.navigation.goBack(null));
+    }).start(() => {
+      if (dataResponse.status == 200) {
+        return props.navigation.navigate("SelectedUserInfoForAdmin", {
+          data: props.route.params.data,
+          deletedFromAdmin: true,
+        });
+      }
+      return props.navigation.goBack(null);
+    });
+  };
+
+  const deleteUserAdmin = () => {
+    setIsLoading(true);
+    return fetch(
+      `http://${SERVER.NAME}/admin/banUser/${props.route.params.data.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: props.AuthProps.token,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((jsonData) => {
+        setDataResponse(jsonData);
+        setIsLoading(false);
+        if (jsonData.status == 200) {
+          changeStoreUserAdmin(true);
+        }
+      });
   };
 
   return (
@@ -62,15 +107,29 @@ const AnimalDeleteUserAccount = (props) => {
             Fermer
           </Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Motif du bannissement</Text>
-        <TextInput
-          multiline
-          numberOfLines={4}
-          maxLength={200}
-          style={styles.textAreaInput}
-          onChange={(e) => null}
-        ></TextInput>
-        <Button name="Confirmer Ban" />
+        <View style={styles.content}>
+          {!isLoading ? (
+            <>
+              {dataResponse.status ? (
+                <>
+                  <Text style={styles.textSucces}>{dataResponse.message}</Text>
+                </>
+              ) : (
+                <>
+                  <Text style={styles.title}>Motif du bannissement</Text>
+                  <TextInput
+                    maxLength={200}
+                    style={styles.textAreaInput}
+                    onChange={(e) => setReasonOfBan(e)}
+                  ></TextInput>
+                  <Button name="Bannir" onPress={() => deleteUserAdmin()} />
+                </>
+              )}
+            </>
+          ) : (
+            <LoaderSpinner />
+          )}
+        </View>
       </Animated.View>
       <Animated.View
         style={[styles.fullContainer, { opacity: animValueOpacity }]}
@@ -82,7 +141,7 @@ const AnimalDeleteUserAccount = (props) => {
 const mapStateToProps = (state) => {
   return {
     AuthProps: state.AuthentificationReducer,
-    DeleteAnimalProps: state.DeleteAnimalReducer,
+    DeleteUserAdminProps: state.DeleteUserAdminReducer,
   };
 };
 
@@ -100,7 +159,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 1,
     backgroundColor: "white",
-    height: 300,
+    height: 250,
     width: 350,
     alignSelf: "center",
     borderRadius: SIZES.borderRadius2,
@@ -111,11 +170,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
-  title:{
+  title: {
     color: COLORS.tertiary,
     marginLeft: 15,
     marginTop: 15,
     fontSize: SIZES.h4,
+    textAlign: "center",
   },
   textAreaInput: {
     padding: 20,
@@ -125,7 +185,18 @@ const styles = StyleSheet.create({
     borderColor: "white",
     borderWidth: 1,
     borderRadius: 20,
-    height: 100,
+    height: 60,
     backgroundColor: COLORS.lightGray3,
+  },
+  textSucces: {
+    color: "red",
+    alignSelf: "center",
+    justifyContent: "center",
+    fontSize: SIZES.h3,
+  },
+  content: {
+    justifyContent: "center",
+    flex: 1,
+    minHeight: 150,
   },
 });

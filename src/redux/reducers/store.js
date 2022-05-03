@@ -72,6 +72,24 @@ function DeleteAnimalReducer(state = {}, action) {
       return state;
   }
 }
+
+function DeleteAnimalAdminReducer(state = {}, action) {
+  switch (action.type) {
+    case "DELETE_ADMIN_ANIMAL_PROPS":
+      return action.dataAnimalAdminforDeleting;
+    default:
+      return state;
+  }
+}
+
+function DeleteUserAdminReducer(state = {}, action) {
+  switch (action.type) {
+    case "DELETE_ADMIN_USER_PROPS":
+      return action.dataUserAdminforDeleting;
+    default:
+      return state;
+  }
+}
 const combinedStore = combineReducers({
   SendNavPropsReducer,
   FavoriteReducer,
@@ -79,6 +97,8 @@ const combinedStore = combineReducers({
   AuthentificationReducer,
   SendNavAccountPropsReducer,
   DeleteAnimalReducer,
+  DeleteAnimalAdminReducer,
+  DeleteUserAdminReducer,
 });
 
 export default createStore(combinedStore);

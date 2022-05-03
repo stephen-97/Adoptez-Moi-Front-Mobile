@@ -14,9 +14,12 @@ import { convertDate, convertDBDate } from "../utility/functions";
 import AnimalListForAnUser from "./AnimalListForAnUser";
 
 const SelectedUserInfoView = (props) => {
-
-
   let data = props.route.params.data;
+
+  useEffect(() => {
+    if (props.route.params.deletedFromAdmin) props.navigation.goBack(null);
+  }, [props.route.params.deletedFromAdmin]);
+
   return (
     <>
       <View style={styles.header}>
@@ -58,7 +61,9 @@ const SelectedUserInfoView = (props) => {
               <View style={styles.valuesViewRow}>
                 <TouchableOpacity
                   onPress={() =>
-                    props.navigation.push("AdminDeleteUserAccount")
+                    props.navigation.push("AdminDeleteUserAccount", {
+                      data: data
+                    })
                   }
                   style={styles.toggleTouchable}
                 >

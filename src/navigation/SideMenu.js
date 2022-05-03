@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createStackNavigator } from "@react-navigation/stack";
 import { Drawer } from "react-native-paper";
 import { icons, SIZES, COLORS } from "../constants";
 
@@ -11,7 +12,7 @@ import AdminPageRouting from "../routing/AdminPageRouting";
 
 import SERVER from "../../config";
 import { ShowingScreen } from "./ShowingScreen";
-import SliderImage from "../components/animalAnnonceComponents/SliderImage";
+import AdminDeleteAnimal from "../components/adminPageComponents/AdminDeleteAnimal";
 import SearchPageRouting from "../routing/SearchPageRouting";
 import AccountPageRouting from "../routing/AccountPageRouting";
 import HomePageRouting from "../routing/HomePageRouting";
@@ -21,6 +22,7 @@ import Line from "../components/utility/Line";
 import AdminPage from "../screens/AdminPage";
 
 const Drawern = createDrawerNavigator();
+const Stack = createStackNavigator();
 
 const mapStateToProps = (state) => {
   return {
@@ -28,7 +30,6 @@ const mapStateToProps = (state) => {
     AuthProps: state.AuthentificationReducer,
   };
 };
-
 
 function DrawerContent(props) {
   const changeStoreFilter = (data) => {
@@ -193,6 +194,7 @@ const ConnectedDrawer = connect(mapStateToProps)(DrawerContent);
 
 const AppDrawer = (props) => {
   return (
+    <>
     <Drawern.Navigator
       drawerContent={(props) => <ConnectedDrawer {...props}/>}
       screenOptions={{
@@ -210,7 +212,19 @@ const AppDrawer = (props) => {
       <Drawern.Screen name="search" component={SearchPageRouting} />
 
       <Drawern.Screen name="faq" component={Faq} />
+      
     </Drawern.Navigator>
+        <Stack.Screen
+          headerMode="none"
+          name="AdminDeleteAnimal"
+          component={AdminDeleteAnimal}
+          options={{
+            headerShown: false,
+            animationEnabled: true,
+            cardStyle: { backgroundColor: "transparent" },
+          }}
+        />
+    </>
   );
 };
 
