@@ -14,6 +14,7 @@ import { COLORS, SIZES, icons } from "../../constants";
 import { refreshToken } from "../utility/functions";
 import Line from "../utility/Line";
 import SERVER from "../../../config";
+import { convertDate } from "../utility/functions";
 import LoaderSpinner from "../utility/LoaderSpinner";
 
 if (
@@ -137,6 +138,8 @@ const MessagePageView = (props) => {
             )}
           </View>
           <Text style={styles.textContent}>{elem.content}</Text>
+          <Text style={styles.date}>{convertDate(elem.created_at)}</Text>
+          {console.log(elem)}
         </TouchableOpacity>
       ))}
     </ScrollView>
@@ -178,6 +181,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 15,
+    justifyContent: "center",
   },
   userNameAndImageContent: {
     flexDirection: "row",
@@ -199,6 +203,10 @@ const styles = StyleSheet.create({
   textContent: {
     color: "white",
     paddingBottom: 10,
+    paddingHorizontal: 15,
+  },
+  date: {
+    color: "black",
     paddingHorizontal: 15,
   },
   lineContainer: {

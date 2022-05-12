@@ -90,6 +90,7 @@ const HomePageView = (props) => {
   useEffect(() => {
     sendData();
     getSpeciesData();
+    getRandomsAnimals();
   }, [isVisible]);
 
   useEffect(() => {

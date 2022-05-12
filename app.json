@@ -7,10 +7,10 @@
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "splash": {
-      "image": "./src/assets/icons/account_logo.png"
+      "image": "./src/assets/icons/account-logo.png"
     },
     "ios": {
-      "requireFullScreen": true,
+      "requireFullScreen": true
     }  
   }
 }

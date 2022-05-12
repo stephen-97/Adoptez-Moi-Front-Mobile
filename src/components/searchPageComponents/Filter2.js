@@ -40,7 +40,6 @@ const Filter2 = (props) => {
     props.dispatch(action);
   };
 
-
   useEffect(() => {
     if (props.FilterData.specie.length !== 0) {
       setAllSpecies(null);

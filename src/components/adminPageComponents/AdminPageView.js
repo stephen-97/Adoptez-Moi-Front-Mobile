@@ -33,7 +33,6 @@ const AdminPageView = (props) => {
     if (props.DeleteUserAdminProps) changeStoreUserAdmin(false);
     setPage(1);
     if (page === 1 || props.DeleteUserAdminProps) getAllUserFromApi2();
-    console.log("hey")
   }, [searchUsername, props.DeleteUserAdminProps === true]);
 
   useEffect(() => {

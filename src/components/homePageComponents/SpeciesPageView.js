@@ -51,7 +51,6 @@ const SpeciesPageView = (props) => {
     )
       .then((response) => response.json())
       .then((jsonData) => {
-        console.log("test");
         setAnnonces(jsonData);
         setIsLoading(isLoading + 1);
       });
