@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import * as SecureStore from "expo-secure-store";
 import {
   StyleSheet,
   View,
@@ -9,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
-import { tokenDecode } from "../utility/functions";
 import SERVER from "../../../config";
 import { COLORS, SIZES } from "../../constants";
 import LoaderSpinner from "../utility/LoaderSpinner";
@@ -75,7 +73,7 @@ const LoginForm = (props) => {
         setDataResponse(jsonData);
         setLoading(false);
         setClickedValue(true);
-        if (jsonData.status == 200) {
+        if (jsonData.status === 200) {
           changeStoreAuth(jsonData);
           props.navigation.navigate("homePage");
         }
@@ -172,7 +170,7 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     justifyContent: "center",
-    backgroundColor: "white", //#e3f6f5
+    backgroundColor: "white",
   },
   connect: {
     textAlign: "center",
