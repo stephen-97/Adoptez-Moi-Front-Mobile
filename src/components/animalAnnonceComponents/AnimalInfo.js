@@ -96,10 +96,25 @@ const AnimalInfo = (props) => {
 
         <View style={styles.valuesView}>
           <View style={styles.valueContainer}>
+            <Text style={styles.title}>Vacciné</Text>
+          </View>
+          <View style={styles.valueContainer}>
+            <Text style={styles.valueResponse}>
+              {props.data.vaccinated ? `Oui` : `Non`}
+            </Text>
+          </View>
+        </View>
+
+        <Line color="rgba(0,0,0,0.1)" />
+
+        <View style={styles.valuesView}>
+          <View style={styles.valueContainer}>
             <Text style={styles.title}>Prix</Text>
           </View>
           <View style={styles.valueContainer}>
-            <Text style={styles.valueResponse}>{props.data.price} €</Text>
+            <Text style={styles.valueResponse}>
+              {props.data.price === 0 ? `Adoption` : `${props.data.price} €`}
+            </Text>
           </View>
         </View>
 

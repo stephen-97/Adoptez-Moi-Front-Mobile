@@ -55,7 +55,7 @@ const MessagePageView = (props) => {
 
   const sendUserViewedTheMessages = () => {
     return fetch(`http://${SERVER.NAME}/comments/userViewedTheMessages`, {
-      method: "POST",
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -139,7 +139,6 @@ const MessagePageView = (props) => {
           </View>
           <Text style={styles.textContent}>{elem.content}</Text>
           <Text style={styles.date}>{convertDate(elem.created_at)}</Text>
-          {console.log(elem)}
         </TouchableOpacity>
       ))}
     </ScrollView>

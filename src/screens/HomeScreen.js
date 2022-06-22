@@ -1,17 +1,24 @@
 import React from "react";
-import { Container, Content } from "native-base";
+import { View, StyleSheet } from "react-native";
 import HeaderNav from "../navigation/HeaderNav";
 import HomePageView from "../components/homePageComponents/HomePageView";
 
 const HomePage = (props) => {
   return (
-    <Container>
-      <HeaderNav name="Acceuil"></HeaderNav>
-      <Content contentContainerStyle={{ flex: 1 }}>
+    <>
+      <HeaderNav name="Accueil"></HeaderNav>
+      <View style={styles.content}>
         <HomePageView navigation={props.navigation} />
-      </Content>
-    </Container>
+      </View>
+    </>
   );
 };
+
+const styles = StyleSheet.create({
+  content: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+});
 
 export default HomePage;

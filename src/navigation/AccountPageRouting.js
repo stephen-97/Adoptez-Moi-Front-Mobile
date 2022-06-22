@@ -1,12 +1,12 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Account from "../screens/Account";
+import Account from "../screens/AccountScreen";
 import DeleteAccountView from "../components/accountPageComponents/DeleteAccountView";
-import FormAnimal from "../screens/FormAnimal";
-import FavoritesPage from "../screens/FavoritesPage";
-import AnimalBigScreen from "../components/animalAnnonceComponents/AnimalBigScreen";
-import UsersMessagesPage from "../screens/UsersMessagesPage";
-import CommentBigScreen from "../components/animalAnnonceComponents/CommentBigScreen";
+import FormAnimal from "../screens/FormAnimalModalScreen";
+import FavoritesPage from "../screens/FavoritesScreen";
+import AnimalBigScreen from "../screens/AnimalModalScreen";
+import UsersMessagesPage from "../screens/UsersMessagesScreen";
+import CommentBigScreen from "../screens/CommentModalScreen";
 
 const Stack = createStackNavigator();
 

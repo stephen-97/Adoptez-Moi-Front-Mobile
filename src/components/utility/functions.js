@@ -52,7 +52,7 @@ export const refreshToken = (props) => {
     const action = { type: "AUTH_PROPS", authentificationProps: data };
     props.dispatch(action);
   };
-  fetch(`http://${SERVER.NAME}/login/authentification/refreshToken`, {
+  fetch(`http://${SERVER.NAME}/authentication/refreshToken`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -62,7 +62,7 @@ export const refreshToken = (props) => {
   })
     .then((response) => response.json())
     .then((jsonData) => {
-      if (jsonData.status !== false) {
+      if (jsonData.status !== 200) {
         changeStoreAuth(jsonData);
       } else {
         changeStoreAuth([]);

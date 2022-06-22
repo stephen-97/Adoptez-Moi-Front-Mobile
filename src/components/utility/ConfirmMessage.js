@@ -9,8 +9,6 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "../../constants";
 import SERVER from "../../../config";
-import { Spinner } from "native-base";
-import { refreshToken } from "../utility/functions";
 import Button from "./Button";
 import LoaderSpinner from "./LoaderSpinner";
 
@@ -29,7 +27,7 @@ const ConfirmMessage = (props) => {
 
   React.useEffect(() => {
     Animated.timing(animValue, {
-      toValue: 250,
+      toValue: 350,
       duration: 200,
       useNativeDriver: false,
     }).start();
@@ -42,7 +40,7 @@ const ConfirmMessage = (props) => {
     return "Erreur serveur";
   };
 
-  const sendData = () => {
+  const deleteAnimal = () => {
     setLoading(true);
     return fetch(
       `http://${SERVER.NAME}/animal/delete/${props.DeleteAnimalProps.id}`,
@@ -61,6 +59,7 @@ const ConfirmMessage = (props) => {
         setLoading(false);
       });
   };
+  
   return (
     <View style={styles.miniWindowContainer}>
       <Animated.View style={[styles.miniWindow, { top: animValue }]}>
@@ -78,7 +77,7 @@ const ConfirmMessage = (props) => {
               <Text style={styles.text}>
                 Voulez vous vraiment supprimer l'annonce de {props.DeleteAnimalProps.name} ?
               </Text>
-              <Button name="Supprimer" onPress={() => sendData()} />
+              <Button name="Supprimer" onPress={() => deleteAnimal()} />
             </>
           ) : (
             <View>
@@ -99,8 +98,6 @@ const styles = StyleSheet.create({
   miniWindowContainer: {
     zIndex: 100,
     position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
     top: 0,
     bottom: 0,
     left: 0,
@@ -114,12 +111,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   miniWindow: {
-    position: "absolute",
-    top: "50%",
     width: "70%",
     alignSelf: "center",
     backgroundColor: "white",
     borderRadius: 20,
+    justifyContent: "center",
+    position: "absolute"
   },
   miniWindowContent: {
     backgroundColor: "white",
@@ -140,7 +137,6 @@ const styles = StyleSheet.create({
   },
 });
 
-//{ transform: [{ translateY: animValue }] }
 
 const mapStateToProps = (state) => {
   return {

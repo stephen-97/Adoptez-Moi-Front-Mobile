@@ -4,7 +4,7 @@ import { images, COLORS } from "../../constants";
 import SERVER from "../../../config";
 import { convertDate } from "../utility/functions";
 
-const Animal = (props) => {
+const AnimalBlock = (props) => {
   return (
     <React.Fragment key="animal">
       <TouchableOpacity
@@ -31,7 +31,9 @@ const Animal = (props) => {
           <View>
             <Text style={style.info}>{props.data.name}</Text>
             <Text style={style.info}>{props.data.age}</Text>
-            <Text style={style.info}>{props.data.price} €</Text>
+            <Text style={style.info}>
+              {props.data.price === 0 ? `Adoption` : `${props.data.price} €`}
+            </Text>
             <Text style={style.info}>{props.data.sex}</Text>
           </View>
         </View>
@@ -116,4 +118,4 @@ const style = StyleSheet.create({
   },
 });
 
-export default Animal;
+export default AnimalBlock;

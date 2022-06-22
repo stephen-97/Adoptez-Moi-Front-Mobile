@@ -70,14 +70,13 @@ const RegistrationForm = (props) => {
 
   const dataInfoMessage = [
     "* L'adresse email est unique et sera changeable",
-    "* Le pseudo est unique et sera unchangeable",
-    "* Le mot de passe doit être composer de 8 caractère minimum dont au moins une lettre, un chiffre et un caractère spécial",
-    "* Vos information doivent rester strictement confidentiennels",
+    "* Le pseudo est unique et sera inchangeable",
+    "* Le mot de passe doit être composer de 8 caractères minimum dont au moins une lettre, un chiffre et un caractère spécial",
+    "* Vos informations doivent rester strictement confidentiennelles",
   ];
 
-  const checkTextInput = () => {
+  const RegistrationFormCheck = () => {
     let i = 0;
-    console.log(password);
     if (!email.trim()) {
       setEmailEmpty(true);
     } else {
@@ -170,9 +169,8 @@ const RegistrationForm = (props) => {
     }
   };
 
-  const sendData = () => {
+  const registrationSendData = () => {
     setLoading(true);
-
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -194,8 +192,8 @@ const RegistrationForm = (props) => {
   };
 
   const onPressCorrectLogin = () => {
-    if (checkTextInput()) {
-      sendData();
+    if (RegistrationFormCheck()) {
+      registrationSendData();
     }
   };
 
@@ -314,7 +312,9 @@ const RegistrationForm = (props) => {
           </View>
           <TouchableOpacity
             style={styles.buttonCreateAvis}
-            onPress={() => (checkTextInput() ? onPressCorrectLogin() : null)}
+            onPress={() =>
+              RegistrationFormCheck() ? onPressCorrectLogin() : null
+            }
           >
             <Text style={styles.textButtonForm}>Valider</Text>
           </TouchableOpacity>
@@ -322,13 +322,13 @@ const RegistrationForm = (props) => {
           {clicked ? (
             <BottomMessage2
               message={dataResponse.message}
-              color={dataResponse.code}
+              color={dataResponse.status}
               click={setClickedValue}
             ></BottomMessage2>
           ) : null}
         </View>
       </View>
-      {dataResponse.code !== "0" ? null : (
+      {dataResponse.status !== 200 ? null : (
         <View style={styles.viewErrorMsg}>
           <Text style={styles.viewErrorText}>{dataResponse.message}</Text>
         </View>

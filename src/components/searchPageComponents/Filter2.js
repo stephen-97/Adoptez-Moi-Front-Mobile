@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
@@ -116,7 +115,6 @@ const Filter2 = (props) => {
   };
 
   return (
-    <>
       <View style={styles.container}>
         <HeaderModalSecond
           title="Filtre"
@@ -310,7 +308,7 @@ const Filter2 = (props) => {
                   }
                   onPress={() => setSex(null)}
                 >
-                  <Text style={sex === null ? { color: "white" } : null}>Non précisé</Text>
+                <Text style={sex === null ? { color: "white" } : null}>Non précisé</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={
@@ -430,7 +428,6 @@ const Filter2 = (props) => {
           </React.Fragment>
         </ScrollView>
       </View>
-    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import  React, {useState} from "react";
+/**import  React, {useState} from "react";
 import {
   StyleSheet,
   Image,
@@ -9,7 +9,6 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { Component } from "react";
 import { connect } from "react-redux";
 
@@ -215,3 +214,4 @@ const styles = StyleSheet.create({
   },
 });
 
+**/

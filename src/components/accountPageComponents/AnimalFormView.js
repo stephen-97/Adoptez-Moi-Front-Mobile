@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
-import { Picker } from "@react-native-picker/picker";
 import {
   StyleSheet,
   Text,
@@ -14,6 +13,7 @@ import {
   Image,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import { Picker } from "@react-native-picker/picker";
 import SERVER from "../../../config";
 import { COLORS, SIZES, departements } from "../../constants";
 import Button from "../utility/Button";
@@ -86,6 +86,7 @@ const AnimalFormView = (props) => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [identificationNumber, setIdentificationNumber] = useState("");
   const [chipOrTatoo, setChipOrTatoo] = useState("Puce");
+  const [vaccinated, setVaccinated] = useState(false);
   const [image, setImage] = useState(null);
 
   //vérifications
@@ -185,7 +186,7 @@ const AnimalFormView = (props) => {
       }
       const formData = new FormData();
       formData.append("name", name);
-      formData.append("price", price);
+      formData.append("price", parseInt(price, 10));
       formData.append("sex", sex);
       formData.append("age", completeAge);
       formData.append("species", props.species);
@@ -194,6 +195,7 @@ const AnimalFormView = (props) => {
       formData.append("departement", departement);
       formData.append("phoneNumber", phoneNumber);
       formData.append("chipOrTatoo", chipOrTatoo);
+      formData.append("vaccinated", vaccinated);
       formData.append("identificationNumber", identificationNumber);
       formData.append("image", image.data);
       return fetch(`http://${SERVER.NAME}/animal/new/`, {
@@ -207,7 +209,8 @@ const AnimalFormView = (props) => {
       })
         .then((response) => response.text())
         .then((jsonData) => {
-          setLoading(false);
+          console.log(jsonData);
+          if (jsonData.status === 200) setLoading(false);
         });
     }
     return null;
@@ -233,6 +236,7 @@ const AnimalFormView = (props) => {
     setRace("");
     setDepartement("Paris 75");
     setIdentificationNumber("");
+    setVaccinated(false);
     setImage(null);
     setLoading(false);
     setResultData(false);
@@ -328,17 +332,32 @@ const AnimalFormView = (props) => {
                     </View>
                     <View style={styles.inputBlock}>
                       <Text style={styles.inputTitle}>
-                        Mode d'identification
+                        Méthode d'identification *
                       </Text>
-                      <Picker
-                        style={styles.picker}
-                        itemStyle={styles.pickerItem}
-                        selectedValue={chipOrTatoo}
-                        onValueChange={(e) => setChipOrTatoo(e)}
-                      >
-                        <Picker.Item label="Puce" value="Puce" />
-                        <Picker.Item label="Tatouage" value="Tatouage" />
-                      </Picker>
+                      <View style={styles.touchableContainer}>
+                        <TouchableOpacity
+                          style={
+                            chipOrTatoo === "Puce"
+                              ? [styles.touchable]
+                              : styles.touchableNotPressed
+                          }
+                          onPress={() => setChipOrTatoo("Puce")}
+                          activeOpacity={1}
+                        >
+                          <Text style={styles.touchableText}>Puce</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          style={
+                            chipOrTatoo === "Tatouage"
+                              ? [styles.touchable]
+                              : styles.touchableNotPressed
+                          }
+                          onPress={() => setChipOrTatoo("Tatouage")}
+                          activeOpacity={1}
+                        >
+                          <Text style={styles.touchableText}>Tatouage</Text>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </>
                 ) : null}
@@ -348,16 +367,63 @@ const AnimalFormView = (props) => {
                 </View>
 
                 <View style={styles.inputBlock}>
+                  <Text style={styles.inputTitle}>Vacciné *</Text>
+                  <View style={styles.touchableContainer}>
+                    <TouchableOpacity
+                      style={
+                        vaccinated === false
+                          ? [styles.touchable]
+                          : styles.touchableNotPressed
+                      }
+                      onPress={() => setVaccinated(false)}
+                      activeOpacity={1}
+                    >
+                      <Text style={styles.touchableText}>Non</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={
+                        vaccinated === true
+                          ? [styles.touchable]
+                          : styles.touchableNotPressed
+                      }
+                      onPress={() => setVaccinated(true)}
+                      activeOpacity={1}
+                    >
+                      <Text style={styles.touchableText}>Oui</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+  
+                <View style={{ marginVertical: 15 }}>
+                  <Line color="rgba(255,255,255,255.3)" />
+                </View>
+
+                <View style={styles.inputBlock}>
                   <Text style={styles.inputTitle}>Sexe *</Text>
-                  <Picker
-                    style={styles.picker}
-                    itemStyle={styles.pickerItem}
-                    selectedValue={sex}
-                    onValueChange={(e) => setSex(e)}
-                  >
-                    <Picker.Item label="Femelle" value="Femelle" />
-                    <Picker.Item label="Mâle" value="Mâle" />
-                  </Picker>
+                  <View style={styles.touchableContainer}>
+                    <TouchableOpacity
+                      style={
+                        sex === "Femelle"
+                          ? [styles.touchable]
+                          : styles.touchableNotPressed
+                      }
+                      onPress={() => setSex("Femelle")}
+                      activeOpacity={1}
+                    >
+                      <Text style={styles.touchableText}>Femelle</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={
+                        sex === "Mâle"
+                          ? [styles.touchable]
+                          : styles.touchableNotPressed
+                      }
+                      onPress={() => setSex("Mâle")}
+                      activeOpacity={1}
+                    >
+                      <Text style={styles.touchableText}>Mâle</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
   
                 <View style={{ marginVertical: 15 }}>
@@ -608,6 +674,40 @@ const styles = StyleSheet.create({
   inputBlock: {
     padding: 5,
     paddingHorizontal: 10,
+  },
+  inputBlockHorizontal: {
+    padding: 5,
+    paddingHorizontal: 10,
+    flexDirection: "row",
+  },
+  touchableContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  touchable: {
+    padding: 15,
+    backgroundColor: COLORS.primary,
+    borderRadius: 20,
+    width: 150,
+    alignItems: "center",
+    borderWidth: 3,
+    borderStyle: "solid",
+    borderColor: "gray",
+  },
+  touchableNotPressed: {
+    padding: 15,
+    backgroundColor: COLORS.darkgray,
+    borderRadius: 20,
+    width: 150,
+    alignItems: "center",
+    borderWidth: 3,
+    borderColor: COLORS.darkgray,
+  },
+  touchableText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
   },
   ageBlock: {
     flexDirection: "row",

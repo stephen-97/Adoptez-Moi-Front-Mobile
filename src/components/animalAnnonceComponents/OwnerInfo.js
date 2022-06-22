@@ -29,7 +29,7 @@ const OwnerInfo = (props) => {
 
   const phoneNumberbasic = props.data.phone_number;
   let phoneNumber = "";
-  if(phoneNumberbasic){
+  if (phoneNumberbasic) {
     let phoneNumber = phoneNumberbasic.match(/.{1,2}/g);
     phoneNumber.join(" ");
   }

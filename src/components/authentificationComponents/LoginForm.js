@@ -57,12 +57,12 @@ const LoginForm = (props) => {
     return false;
   };
 
-  const sendData = () => {
+  const loginRequest = () => {
     setLoading(true);
     const formData = new FormData();
     formData.append("email", user);
     formData.append("password", password);
-    return fetch(`http://${SERVER.NAME}/login/authentification/auth`, {
+    return fetch(`http://${SERVER.NAME}/authentication`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -75,7 +75,7 @@ const LoginForm = (props) => {
         setDataResponse(jsonData);
         setLoading(false);
         setClickedValue(true);
-        if (jsonData.code) {
+        if (jsonData.status == 200) {
           changeStoreAuth(jsonData);
           props.navigation.navigate("homePage");
         }
@@ -89,7 +89,7 @@ const LoginForm = (props) => {
 
   const onPressCorrectLogin = () => {
     if (checkTextInput()) {
-      sendData();
+      loginRequest();
     }
   };
 
@@ -140,7 +140,7 @@ const LoginForm = (props) => {
           {clicked ? (
             <BottomMessage2
               message={dataResponse.message}
-              color={dataResponse.code}
+              color={dataResponse.status}
               click={setClickedValue}
             />
           ) : null}

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -8,12 +9,11 @@ import {
   ScrollView,
 } from "react-native";
 import { connect } from "react-redux";
-import { COLORS, icons, SIZES } from "../../constants";
-import SERVER from "../../../config";
-import CloseModal from "../utility/CloseModalButton";
-import Button from "../utility/Button";
-import LoaderSpinner from "../utility/LoaderSpinner";
-
+import { COLORS, icons, SIZES } from "../constants";
+import SERVER from "../../config";
+import CloseModal from "../components/utility/CloseModalButton";
+import Button from "../components/utility/Button";
+import LoaderSpinner from "../components/utility/LoaderSpinner";
 
 const { width, height } = Dimensions.get("window");
 
@@ -80,7 +80,8 @@ const AnimalBigScreen = (props) => {
         <ScrollView>
           {props.route.params.type === "question" ? (
             <Text style={styles.title}>
-              Posez votre question au propriétaire de {props.route.params.data.name}
+              Posez votre question au propriétaire de
+              {props.route.params.data.name}
             </Text>
           ) : null}
           {props.route.params.type === "answer" ? (

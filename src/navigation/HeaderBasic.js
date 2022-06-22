@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Header, Body, Title } from "native-base";
+import { View, Text } from "react-native";
 import { Image, StyleSheet, TouchableHighlight } from "react-native";
 import { COLORS } from "../constants/theme";
 import icons from "../constants/icons";
@@ -9,19 +9,19 @@ const imageContainerHeight = 40;
 
 const HeaderBasic = (props) => {
   return (
-    <>
-      <Header style={styles.navBarHeader}>
-        <Body style={styles.body}>
-          <TouchableHighlight
-            style={styles.imageContainerNav}
-            onPress={() => props.navigation.goBack(null)}
-          >
-            <Image style={styles.imageNav} source={icons.crossCloseModal} />
-          </TouchableHighlight>
-          <Title style={styles.title}>{props.name}</Title>
-        </Body>
-      </Header>
-    </>
+    <View style={styles.navBarHeader}>
+      <View style={styles.body}>
+        <TouchableHighlight
+          style={styles.imageContainerNav}
+          onPress={() => props.navigation.goBack(null)}
+        >
+          <Image style={styles.imageNav} source={icons.crossCloseModal} />
+        </TouchableHighlight>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{props.name}</Text>
+        </View>
+      </View>
+    </View>
   );
 };
 
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: COLORS.secondary,
     flexDirection: "row",
+    height: 110,
   },
   body: {
     flex: 1,
@@ -39,15 +40,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
+  titleContainer: {
+    height: 40,
+    position: "absolute",
+    top: "40%",
+    justifyContent: "center",
+  },
   title: {
-    fontSize: 20,
-    alignSelf: "center",
+    fontSize: 22,
+    textAlign: "center",
   },
   imageContainerNav: {
     height: 40,
     width: 40,
     position: "absolute",
-    right: "5%",
+    right: "7.5%",
+    top: "40%",
   },
   imageContainerAccount: {
     height: imageContainerHeight,
@@ -59,6 +67,7 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
     maxWidth: "100%",
     zIndex: 1,
+    top: "2.5%",
   },
   sliderAccount: {
     position: "absolute",
@@ -69,6 +78,6 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
     zIndex: 1,
-    transform: [{translateX: '-40'}]
+    transform: [{translateX: -40}]
   },
 });

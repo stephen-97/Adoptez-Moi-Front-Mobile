@@ -1,13 +1,13 @@
 {
-  "name": "avis-R-animaux",
-  "displayName": "avis-R-animaux",
+  "name": "Adoptez-Moi-Animaux",
+  "displayName": "Adoptez-Moi-Animaux",
   "expo": {
-    "name": "avis-R-animaux",
-    "slug": "avis-R-animaux",
+    "name": "Adoptez-Moi-Animaux",
+    "slug": "Adoptez-Moi-Animaux",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
     "splash": {
-      "image": "./src/assets/icons/account-logo.png"
+      "image": "./src/assets/appLogo/loadingPage.png"
     },
     "ios": {
       "requireFullScreen": true

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import AnimalBigScreen from "../components/animalAnnonceComponents/AnimalBigScreen";
-import HomePage from "../screens/HomePage";
+import AnimalBigScreen from "../screens/AnimalModalScreen";
+import HomePage from "../screens/HomeScreen";
 import SpeciesPageView from "../components/homePageComponents/SpeciesPageView";
-import CommentBigScreen from "../components/animalAnnonceComponents/CommentBigScreen";
+import CommentBigScreen from "../screens/CommentModalScreen";
 import AdminDeleteAnimal from "../components/adminPageComponents/AdminDeleteAnimal";
 
 const Stack = createStackNavigator();

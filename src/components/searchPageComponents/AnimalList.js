@@ -10,7 +10,7 @@ import {
 import { connect, useDispatch } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
 import SERVER from "../../../config";
-import Animal from "./Animal";
+import AnimalBlock from "./AnimalBlock";
 import Line from "../utility/Line";
 import Button from "../utility/Button";
 import { COLORS, SIZES, icons } from "../../constants";
@@ -175,7 +175,7 @@ const AnimalList2 = (props) => {
             <Text>{data.total_count} annonces trouvées</Text>
             {data.items.map((elem, i) => (
               <>
-                <Animal key={i+1} navigation={props.navigation} data={elem}/>
+                <AnimalBlock key={i+1} navigation={props.navigation} data={elem}/>
                 <Line key={i-1} color="#00000050" />
               </>
             ))}

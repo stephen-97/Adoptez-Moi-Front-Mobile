@@ -19,7 +19,7 @@ const FaqPage = (props) => {
         </View>
         <View style={styles.content}>
           <Text style={styles.text}>
-            "Prenez moi" est une application pour vendre ou donner des animaux
+            "Adoptez moi" est une application pour vendre ou donner des animaux
             à des particuliers. Les annonces peuvent être originaire d'un particulier
             ou d'une société. 
           </Text>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-  }
+  },
 });
 
 export default FaqPage;

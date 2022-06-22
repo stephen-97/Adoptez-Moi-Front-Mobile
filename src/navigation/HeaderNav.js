@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Header, Body, Title } from "native-base";
-import { Image, View, StyleSheet, TouchableHighlight } from "react-native";
+import { Image, View, StyleSheet, TouchableHighlight, Text } from "react-native";
 import { COLORS } from "../constants/theme";
 import icons from "../constants/icons";
 import { tokenDecode } from "../components/utility/functions";
 import SliderAccountLogo from "../components/authentificationComponents/SliderAccountLogo";
+import Line from "../components/utility/Line";
 
 const imageContainerHeight = 40;
 
@@ -24,8 +24,8 @@ const HeaderNav = (props) => {
 
   return (
     <>
-      <Header style={styles.navBarHeader}>
-        <Body style={styles.body}>
+      <View style={styles.navBarHeader}>
+        <View style={styles.body}>
           {props.AuthProps.token ? (
             <>
               <TouchableHighlight
@@ -51,9 +51,10 @@ const HeaderNav = (props) => {
               {userHaveNewMessages() ? <View style={styles.redPoint}></View> : null}
             </>
           </TouchableHighlight>
-          <Title style={styles.title}>{props.name}</Title>
-        </Body>
-      </Header>
+          <Text style={styles.title}>{props.name}</Text>
+        </View>
+      </View>
+      <Line color="rgba(0,0,0,0.3)" />
       {toggled ? (
         <SliderAccountLogo
           style={styles.sliderAccount}
@@ -78,23 +79,24 @@ export default connect(mapStateToProps)(HeaderNav);
 const styles = StyleSheet.create({
   navBarHeader: {
     backgroundColor: COLORS.secondary,
-    flexDirection: "row",
+    height: 115,
   },
   body: {
     flex: 1,
+    top: 10,
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
   },
   title: {
-    fontSize: 20,
-    alignSelf: "center",
+    fontSize: 22,
+    bottom: -5,
   },
   imageContainerNav: {
     height: 40,
     width: 40,
     position: "absolute",
-    right: "5%",
+    right: "7.5%",
   },
   imageContainerAccount: {
     height: imageContainerHeight,
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 10,
     borderBottomEndRadius: 10,
     zIndex: 1,
-    transform: [{ translateX: "-40" }],
+    transform: [{ translateX: -40 }],
   },
   redPoint: {
     width: 12,

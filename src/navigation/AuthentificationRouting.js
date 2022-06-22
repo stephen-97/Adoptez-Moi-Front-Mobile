@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Login from "../screens/Login";
-import Registration from "../screens/Registration";
+import Login from "../screens/LoginScreen";
+import Registration from "../screens/RegistrationScreen";
 import ConditionsUtilisation from "../components/utility/conditionsUtilisation";
 
 const Stack = createStackNavigator();
@@ -21,7 +21,7 @@ const AuthentificationRouting = ({ navigation, route }) => {
           component={Login}
           initialParams={{ navigation: navigation, routeLogin: route}}
           options={{
-            animationEnabled: true,
+            animationEnabled: false,
           }}
         />
         <Stack.Screen

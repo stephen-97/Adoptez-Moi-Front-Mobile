@@ -18,8 +18,8 @@ const AnimalListToUser = (props) => {
     props.dispatch(action);
   };
 
-  const sendData = () => {
-    const formData = new FormData();
+  const getAllAnimalFromTheUser = () => {
+    console.log("test2");
     return fetch(`http://${SERVER.NAME}/wanted/user/`, {
       method: "GET",
       headers: {
@@ -30,16 +30,14 @@ const AnimalListToUser = (props) => {
     })
       .then((response) => response.json())
       .then((jsonData) => {
+        console.log("test 3");
         setData(jsonData);
-        if (jsonData.status === 200) {
-          props.toggled(false);
-        }
       });
   };
 
   const isVisible = useIsFocused();
   useEffect(() => {
-    sendData();
+    setData([]);
   }, [isVisible, props.DeleteAnimalProps]);
 
   return (

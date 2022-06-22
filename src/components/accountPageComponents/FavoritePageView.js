@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { View, StyleSheet, UIManager, Platform, FlatList } from "react-native";
 import { COLORS, SIZES, icons } from "../../constants";
-import Animal from "../searchPageComponents/Animal";
+import AnimalBlock from "../searchPageComponents/AnimalBlock";
 import Line from "../utility/Line";
 import SERVER from "../../../config";
 import LoaderSpinner from "../utility/LoaderSpinner";
@@ -72,7 +72,7 @@ const FavoritePageView = (props) => {
         onEndReachedThreshold={0.1}
         renderItem={({ item }) => (
           <View style={{ alignItems: "center" }}>
-            <Animal navigation={props.navigation} data={item} />
+            <AnimalBlock navigation={props.navigation} data={item} />
             <Line color="#00000050" />
           </View>
         )}

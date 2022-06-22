@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Animated, StyleSheet } from "react-native";
-import { Container, Content, Right } from "native-base";
+import { Animated, StyleSheet, View } from "react-native";
 import HeaderBasic from "../navigation/HeaderBasic";
 import AnimalFormView from "../components/accountPageComponents/AnimalFormView";
 import AnimalSelectForm from "../components/accountPageComponents/AnimalSelectForm";
-import { relativeTimeRounding } from "moment";
 
 const usePrevious = (value) => {
   const ref = useRef();
@@ -64,9 +62,9 @@ const FormAnimal = (props) => {
   }, [isFormSelected]);
 
   return (
-    <Container style={{ borderRadius: 50 }}>
+    <View style={{ flex: 1, borderRadius: 50 }}>
       <HeaderBasic name="Formulaire" navigation={props.navigation} />
-      <Content contentContainerStyle={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
         {!isFormSelected2 ? (
           <Animated.View
             style={[styles.selectFormContainer, { opacity: fadeAnim }]}
@@ -89,8 +87,8 @@ const FormAnimal = (props) => {
             />
           </Animated.View>
         )}
-      </Content>
-    </Container>
+      </View>
+    </View>
   );
 };
 
@@ -103,5 +101,3 @@ const styles = StyleSheet.create({
 });
 
 export default FormAnimal;
-
-//<AnimalFormView navigation={navigation} />

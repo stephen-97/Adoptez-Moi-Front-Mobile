@@ -10,14 +10,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { connect } from "react-redux";
-import { tokenDecode } from "../utility/functions";
-import { COLORS, icons, SIZES } from "../../constants";
-import SERVER from "../../../config";
-import AnimalInfo from "./AnimalInfo";
-import CommentsInfo from "./CommentInfo";
-import OwnerInfo from "./OwnerInfo";
-import AlerteInfo from "./AlerteInfo";
-import CloseModal from "../utility/CloseModalButton";
+import { tokenDecode } from "../components/utility/functions";
+import { COLORS, icons, SIZES } from "../constants";
+import SERVER from "../../config";
+import AnimalInfo from "../components/animalAnnonceComponents/AnimalInfo";
+import CommentsInfo from "../components/animalAnnonceComponents/CommentInfo";
+import OwnerInfo from "../components/animalAnnonceComponents/OwnerInfo";
+import AlerteInfo from "../components/animalAnnonceComponents/AlerteInfo";
+import CloseModal from "../components/utility/CloseModalButton";
 
 const { width, height } = Dimensions.get("window");
 

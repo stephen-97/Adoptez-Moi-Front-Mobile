@@ -11,7 +11,7 @@ import { COLORS, SIZES, icons } from "../../constants";
 const BottomMessage2 = (props) => {
   
   const messageColor = () => {
-    if (props.color) {
+    if (props.status == 200) {
       return { backgroundColor: "#71777880", borderColor: "#717778" };
     }
     return { backgroundColor: "#f0284280", borderColor: "#f02842" };
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: "2%",
     top: 31,
-    transform: [{ translateY: "-10" }],
+    transform: [{ translateY: -10 }],
   },
   imageCross: {
     height: 20,

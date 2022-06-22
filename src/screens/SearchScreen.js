@@ -2,7 +2,6 @@ import * as React from "react";
 import { ScrollView, View } from "react-native";
 import AnimalList2 from "../components/searchPageComponents/AnimalList";
 import ToggleFilter from "../components/searchPageComponents/ToggleFilter";
-import InputRange from "../components/utility/InputRange";
 import HeaderNav from "../navigation/HeaderNav";
 
 const SearchPage = ({ navigation }) => {

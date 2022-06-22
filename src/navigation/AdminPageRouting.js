@@ -1,11 +1,11 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import DeleteAccountView from "../components/accountPageComponents/DeleteAccountView";
-import AdminPage from "../screens/AdminPage";
+import AdminPage from "../screens/AdminScreen";
 import SelectedUserInfoView from "../components/adminPageComponents/SelectedUserInfoView";
-import HeaderNav from "../navigation/HeaderNav";
+import HeaderNav from "./HeaderNav";
 import AdminDeleteUserAccount from "../components/adminPageComponents/AdminDeleteUserAccount";
-import AnimalBigScreen from "../components/animalAnnonceComponents/AnimalBigScreen";
+import AnimalBigScreen from "../screens/AnimalModalScreen";
 import AdminDeleteAnimal from "../components/adminPageComponents/AdminDeleteAnimal";
 
 const Stack = createStackNavigator();
