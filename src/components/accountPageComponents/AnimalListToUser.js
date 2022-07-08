@@ -19,7 +19,6 @@ const AnimalListToUser = (props) => {
   };
 
   const getAllAnimalFromTheUser = () => {
-    console.log("test2");
     return fetch(`http://${SERVER.NAME}/wanted/user/`, {
       method: "GET",
       headers: {
@@ -30,14 +29,13 @@ const AnimalListToUser = (props) => {
     })
       .then((response) => response.json())
       .then((jsonData) => {
-        console.log("test 3");
         setData(jsonData);
       });
   };
 
   const isVisible = useIsFocused();
   useEffect(() => {
-    setData([]);
+    getAllAnimalFromTheUser();
   }, [isVisible, props.DeleteAnimalProps]);
 
   return (
@@ -47,25 +45,29 @@ const AnimalListToUser = (props) => {
           <Text style={styles.textNoAnnonce}>Pas d'annonces postés</Text>
         </View>
       ) : null}
-      {data.map((elem, i) => (
-        <View key={i}>
-          <View style={styles.container}>
-            <Image
-              style={styles.image}
-              source={{
-                uri: `http://${SERVER.NAME}/upload/${elem.images[0].name}`,
-              }}
-            />
-            <Text style={styles.text}>{elem.name}</Text>
-            <MiniButton
-              name="Supprimer"
-              extraStyle={styles.buttonExtraStyle}
-              onPress={() => changeStoreAnimal(elem)}
-            />
-          </View>
-          <Line color="rgba(255,255,255,255.3)" />
-        </View>
-      ))}
+      {data.length > 0 ? (
+        <>
+          {data.map((elem, i) => (
+            <View key={i}>
+              <View style={styles.container}>
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: `http://${SERVER.NAME}/upload/${elem.images[0].name}`,
+                  }}
+                />
+                <Text style={styles.text}>{elem.name}</Text>
+                <MiniButton
+                  name="Supprimer"
+                  extraStyle={styles.buttonExtraStyle}
+                  onPress={() => changeStoreAnimal(elem)}
+                />
+              </View>
+              <Line color="rgba(255,255,255,255.3)" />
+            </View>
+          ))}
+        </>
+      ) : null}
     </>
   );
 };

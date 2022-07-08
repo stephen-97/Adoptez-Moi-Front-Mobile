@@ -9,8 +9,9 @@ import {
 import { connect } from "react-redux";
 import SERVER from "../../../config";
 import { COLORS, SIZES } from "../../constants";
-import BottomMessage from "../utility/BottomMessage";
+import BottomMessage2 from "../utility/BottomMessage2";
 import { tokenDecode, refreshToken } from "../utility/functions";
+import LoaderSpinner from "../utility/LoaderSpinner";
 
 const DeleteAccountView = (props) => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -20,6 +21,7 @@ const DeleteAccountView = (props) => {
   const [clicked, setClickedValue] = useState(false);
 
   const sendData = () => {
+    setClickedValue(true);
     const formData = new FormData();
     formData.append("email", tokenDecode(props.AuthProps.token).email);
     formData.append("currentPassword", currentPassword);
@@ -35,8 +37,7 @@ const DeleteAccountView = (props) => {
       .then((jsonData) => {
         setDataResponse(jsonData);
         setClickedValue(false);
-        setClickedValue(true);
-        if (jsonData.code) {
+        if (jsonData.status == 200) {
           const action = {
             type: "AUTH_PROPS",
             authentificationProps: { code: false },
@@ -74,61 +75,61 @@ const DeleteAccountView = (props) => {
           >
             <Text style={styles.titleCloseButton}>Fermer</Text>
           </TouchableOpacity>
-          {dataResponse.code ? (
+          {dataResponse.status == 200 ? (
             <View style={styles.content}>
-              <Text style={[styles.warningMsg, { color: COLORS.correct }]}>
+              <Text style={styles.warningMsg}>
                 {"\n"}
-                Votre compte a été supprimé avec succès
+                Votre compte a été supprimer avec succès.
               </Text>
               <TouchableOpacity
                 onPress={() => {
                   props.navigation.goBack(null);
-                  props.navigation.navigate("home");
+                  props.navigation.navigate("homePage");
                 }}
                 style={styles.buttonCreateAvis}
               >
-                <Text style={styles.textButton}>Ok</Text>
+                <Text style={styles.textButtonSucces}>OK</Text>
               </TouchableOpacity>
             </View>
           ) : (
-            <View style={styles.content}>
-              <Text style={styles.warningMsg}>
-                <Text style={{ fontWeight: "bold", marginBottom: 10 }}>
-                  ATTENTION :
-                </Text>
-                {"\n"}
-                La suppression d'un compte est irréversible et entraînera la
-                perte de tout les avis qui y sont liés
-              </Text>
-              <TextInput
-                placeholder="Entre votre mot de passe pour confirmation"
-                style={
-                  currentPasswordEmpty
-                    ? styles.textInputIncorrect
-                    : styles.textInput
-                }
-                onChangeText={(e) => setCurrentPassword(e)}
-                onFocus={() => setCurrentPasswordEmpty(0)}
-                secureTextEntry
-              />
-              <TouchableOpacity
-                onPress={() => onPressCorrectPassword()}
-                style={styles.buttonCreateAvis}
-              >
-                <Text style={styles.textButton}>Soumettre</Text>
-              </TouchableOpacity>
-            </View>
+            <>
+              {clicked ? (
+                <View style={styles.content}>
+                  <LoaderSpinner />
+                </View>
+              ) : (
+                <View style={styles.content}>
+                  <Text style={styles.warningMsg}>
+                    <Text style={{ fontWeight: "bold", marginBottom: 10 }}>
+                      ATTENTION :
+                    </Text>
+                    {"\n"}
+                    La suppression d'un compte est irréversible et entraînera la
+                    perte de tout les animaux qui y sont liés
+                  </Text>
+                  <TextInput
+                    placeholder="Entre votre mot de passe pour confirmation"
+                    style={
+                      currentPasswordEmpty
+                        ? styles.textInputIncorrect
+                        : styles.textInput
+                    }
+                    onChangeText={(e) => setCurrentPassword(e)}
+                    onFocus={() => setCurrentPasswordEmpty(0)}
+                    secureTextEntry
+                  />
+                  <TouchableOpacity
+                    onPress={() => onPressCorrectPassword()}
+                    style={styles.buttonCreateAvis}
+                  >
+                    <Text style={styles.textButton}>Soumettre</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </>
           )}
         </View>
       </View>
-      {clicked ? (
-        <BottomMessage
-          message={dataResponse.message}
-          height={-100}
-          color={dataResponse.code ? COLORS.correct : COLORS.incorrect}
-          click={setClickedValue}
-        ></BottomMessage>
-      ) : null}
     </>
   );
 };
@@ -154,11 +155,11 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     borderRadius: SIZES.borderRadius2,
-    paddingBottom: 20,
   },
   content: {
     padding: 5,
     paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   closeButton: {
     padding: SIZES.padding,
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
   },
   warningMsg: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 20,
     paddingVertical: 15,
   },
   buttonCreateAvis: {
@@ -198,10 +199,16 @@ const styles = StyleSheet.create({
     padding: SIZES.padding2,
     backgroundColor: COLORS.tertiary,
     borderRadius: 5,
-    marginTop: 20,
+    margin: 20,
   },
   textButton: {
     fontSize: SIZES.h2,
     color: "white",
   },
+  textButtonSucces: {
+    fontSize: SIZES.h2,
+    color: "white",
+    width: 100,
+    textAlign: "center",
+  }
 });

@@ -6,6 +6,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 import { connect } from "react-redux";
 import { COLORS, SIZES } from "../../constants";
@@ -104,7 +105,7 @@ const ChangePassword = (props) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Authorization": props.AuthProps.token,
+        Authorization: props.AuthProps.token,
       },
       body: formData,
     })
@@ -113,7 +114,7 @@ const ChangePassword = (props) => {
         setDataResponse(jsonData);
         setLoading(false);
         setClickedValue(true);
-        if (jsonData.code) {
+        if (jsonData.status == 200) {
           setTimeout(() => {
             props.toggled(false);
           }, 2000);
@@ -129,7 +130,7 @@ const ChangePassword = (props) => {
 
   return (
     <>
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         <View style={styles.helpingMessageContainer}>
           <Text style={styles.textHelpingMessage}>
             Le mot de passe doit contenir 8 caractère minimum, dont au moins un
@@ -184,8 +185,6 @@ const ChangePassword = (props) => {
           </View>
         </View>
 
-      
-
         <View style={styles.line}></View>
 
         <View style={styles.containerChildren}>
@@ -221,11 +220,11 @@ const ChangePassword = (props) => {
         {clicked ? (
           <BottomMessage2
             message={dataResponse.message}
-            color={dataResponse.code}
+            status={dataResponse.status}
             click={setClickedValue}
           />
         ) : null}
-      </View>
+      </KeyboardAvoidingView>
     </>
   );
 };

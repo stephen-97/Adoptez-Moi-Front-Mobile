@@ -13,6 +13,8 @@ export const COLORS = {
   black: "#1E1F20",
   white: "#FFFFFF",
 
+  placeHolderColor: "#00000050",
+
   lightprimary: "#363159",
   lightGray: "#F5F5F6",
   lightGray2: "#F6F6F7",

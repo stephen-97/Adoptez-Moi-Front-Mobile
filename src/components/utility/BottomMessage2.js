@@ -9,7 +9,6 @@ import {
 import { COLORS, SIZES, icons } from "../../constants";
 
 const BottomMessage2 = (props) => {
-  
   const messageColor = () => {
     if (props.status == 200) {
       return { backgroundColor: "#71777880", borderColor: "#717778" };

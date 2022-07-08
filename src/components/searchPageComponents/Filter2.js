@@ -115,319 +115,319 @@ const Filter2 = (props) => {
   };
 
   return (
-      <View style={styles.container}>
-        <HeaderModalSecond
-          title="Filtre"
-          extraStyle={{ backgroundColor: COLORS.secondary }}
-          onPress={() => props.navigation.goBack(null)}
-        />
-        <ScrollView style={{ marginTop: 100 }}>
-          <React.Fragment key="formikSearch">
-            <View style={styles.form_view}>
-              <View style={styles.textContainer}>
-                <Text style={styles.form_text}>Ordre </Text>
-              </View>
-              <View style={styles.choicesBlock}>
-                <TouchableOpacity
-                  style={
-                    order === null
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setOrder(null)}
-                >
-                  <Text style={order === null ? { color: "white" } : null}>Plus récents</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    order === "prix croissant"
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setOrder("prix croissant")}
-                >
-                  <Text style={order === "prix croissant" ? { color: "white" } : null}>Prix croissant</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    order === "prix decroissant"
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setOrder("prix decroissant")}
-                >
-                  <Text style={order === "prix decroissant" ? { color: "white" } : null}>Prix décroissant</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    order === "plus ancient"
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setOrder("plus ancient")}
-                >
-                  <Text style={order === "plus ancient" ? { color: "white" } : null}>Plus anciens</Text>
-                </TouchableOpacity>
-              </View>
+    <View style={styles.container}>
+      <HeaderModalSecond
+        title="Filtre"
+        extraStyle={{ backgroundColor: COLORS.secondary }}
+        onPress={() => props.navigation.goBack(null)}
+      />
+      <ScrollView style={{ marginTop: 100 }}>
+        <React.Fragment key="formikSearch">
+          <View style={styles.form_view}>
+            <View style={styles.textContainer}>
+              <Text style={styles.form_text}>Ordre </Text>
             </View>
-            <View style={styles.form_view}>
-              <View style={styles.textContainer}>
-                <Text style={styles.form_text}>Espèce </Text>
-              </View>
-              <View style={styles.choicesBlock}>
-                <TouchableOpacity
-                  style={
-                    allSpecies === true
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => pressAllSpecies()}
-                >
-                  <Text style={allSpecies === true ? { color: "white" } : null}>Tout</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    chien
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => {
-                    checkAllSpecies();
-                    if (chien) {
-                      if((chat || rongueur || volatile || reptile || autres) === null){
-                        setAllSpecies(true);
-                      }
-                      setChien(null);
-                    } else setChien("chien");
-                  }}
-                >
-                  <Text style={chien ? { color: "white" } : null}>Chien</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    chat
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => {
-                    checkAllSpecies();
-                    if (chat) {
-                      if((chien || rongueur || volatile || reptile || autres) === null){
-                        setAllSpecies(true);
-                      }
-                      setChat(null);
-                    } else setChat("chat");
-                  }}
-                >
-                  <Text style={chat ? { color: "white" } : null}>Chat</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    rongueur
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => {
-                    checkAllSpecies();
-                    if (rongueur) {
-                      if((chien || chat || volatile || reptile || autres) === null){
-                        setAllSpecies(true);
-                      }
-                      setRongueur(null);
-                    } else setRongueur("rongueur");
-                  }}
-                >
-                  <Text style={rongueur ? { color: "white" } : null}>Rongueur</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    volatile
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => {
-                    checkAllSpecies();
-                    if (volatile) {
-                      if((chient || chat || rongueur || reptile || autres) === null){
-                        setAllSpecies(true);
-                      }
-                      setVolatile(null);
-                    } else setVolatile("volatile");
-                  }}
-                >
-                  <Text style={volatile ? { color: "white" } : null}>Volatile</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    reptile
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => {
-                    checkAllSpecies();
-                    if (reptile) {
-                      if((chien || chat || rongueur || volatile || reptile) === null){
-                        setAllSpecies(true);
-                      }
-                      setReptile(null);
-                    } else setReptile("reptile");
-                  }}
-                >
-                  <Text style={reptile ? { color: "white" } : null}>Reptile</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    autres
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => {
-                    checkAllSpecies();
-                    if (autres) {
-                      if((chien || chat || rongueur || volatile || reptile) === null){
-                        setAllSpecies(true);
-                      }
-                      setAutres(null);
-                    } else setAutres("autre");
-                  }}
-                >
-                  <Text style={autres ? { color: "white" } : null}>Autres</Text>
-                </TouchableOpacity>
-              </View>
+            <View style={styles.choicesBlock}>
+              <TouchableOpacity
+                style={
+                  order === null
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setOrder(null)}
+              >
+                <Text style={order === null ? { color: "white" } : null}>Plus récents</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  order === "prix croissant"
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setOrder("prix croissant")}
+              >
+                <Text style={order === "prix croissant" ? { color: "white" } : null}>Prix croissant</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  order === "prix decroissant"
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setOrder("prix decroissant")}
+              >
+                <Text style={order === "prix decroissant" ? { color: "white" } : null}>Prix décroissant</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  order === "plus ancient"
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setOrder("plus ancient")}
+              >
+                <Text style={order === "plus ancient" ? { color: "white" } : null}>Plus anciens</Text>
+              </TouchableOpacity>
             </View>
-            <View style={styles.form_view}>
-              <View style={styles.textContainer}>
-                <Text style={styles.form_text}>Sexe </Text>
-              </View>
-              <View style={styles.choicesBlock}>
-                <TouchableOpacity
-                  style={
-                    sex === null
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setSex(null)}
-                >
+          </View>
+          <View style={styles.form_view}>
+            <View style={styles.textContainer}>
+              <Text style={styles.form_text}>Espèce </Text>
+            </View>
+            <View style={styles.choicesBlock}>
+              <TouchableOpacity
+                style={
+                  allSpecies === true
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => pressAllSpecies()}
+              >
+                <Text style={allSpecies === true ? { color: "white" } : null}>Tout</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  chien
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => {
+                  checkAllSpecies();
+                  if (chien) {
+                    if((chat || rongueur || volatile || reptile || autres) === null){
+                      setAllSpecies(true);
+                    }
+                    setChien(null);
+                  } else setChien("chien");
+                }}
+              >
+                <Text style={chien ? { color: "white" } : null}>Chien</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  chat
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => {
+                  checkAllSpecies();
+                  if (chat) {
+                    if((chien || rongueur || volatile || reptile || autres) === null){
+                      setAllSpecies(true);
+                    }
+                    setChat(null);
+                  } else setChat("chat");
+                }}
+              >
+                <Text style={chat ? { color: "white" } : null}>Chat</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  rongueur
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => {
+                  checkAllSpecies();
+                  if (rongueur) {
+                    if((chien || chat || volatile || reptile || autres) === null){
+                      setAllSpecies(true);
+                    }
+                    setRongueur(null);
+                  } else setRongueur("rongueur");
+                }}
+              >
+                <Text style={rongueur ? { color: "white" } : null}>Rongueur</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  volatile
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => {
+                  checkAllSpecies();
+                  if (volatile) {
+                    if((chien || chat || rongueur || reptile || autres) === null){
+                      setAllSpecies(true);
+                    }
+                    setVolatile(null);
+                  } else setVolatile("volatile");
+                }}
+              >
+                <Text style={volatile ? { color: "white" } : null}>Volatile</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  reptile
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => {
+                  checkAllSpecies();
+                  if (reptile) {
+                    if((chien || chat || rongueur || volatile || reptile) === null){
+                      setAllSpecies(true);
+                    }
+                    setReptile(null);
+                  } else setReptile("reptile");
+                }}
+              >
+                <Text style={reptile ? { color: "white" } : null}>Reptile</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  autres
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => {
+                  checkAllSpecies();
+                  if (autres) {
+                    if((chien || chat || rongueur || volatile || reptile) === null){
+                      setAllSpecies(true);
+                    }
+                    setAutres(null);
+                  } else setAutres("autre");
+                }}
+              >
+                <Text style={autres ? { color: "white" } : null}>Autres</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.form_view}>
+            <View style={styles.textContainer}>
+              <Text style={styles.form_text}>Sexe </Text>
+            </View>
+            <View style={styles.choicesBlock}>
+              <TouchableOpacity
+                style={
+                  sex === null
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setSex(null)}
+              >
                 <Text style={sex === null ? { color: "white" } : null}>Non précisé</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    sex === "male"
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setSex("male")}
-                >
-                  <Text style={sex === "male" ? { color: "white" } : null}>Mâle</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    sex === "femelle"
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setSex("femelle")}
-                >
-                  <Text style={sex === "femelle" ? { color: "white" } : null}>Femelle</Text>
-                </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  sex === "male"
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setSex("male")}
+              >
+                <Text style={sex === "male" ? { color: "white" } : null}>Mâle</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  sex === "femelle"
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setSex("femelle")}
+              >
+                <Text style={sex === "femelle" ? { color: "white" } : null}>Femelle</Text>
+              </TouchableOpacity>
             </View>
+          </View>
 
-            <View style={styles.form_view}>
-              <View style={styles.textContainer}>
-                <Text style={styles.form_text}>Tranche de prix </Text>
-              </View>
-              <View style={styles.choicesBlock}>
-                <TouchableOpacity
-                  style={
-                    priceRange === null
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setPriceRange(null)}
-                >
-                  <Text style={!priceRange ? { color: "white" } : null}>Illimité</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    JSON.stringify(priceRange) === JSON.stringify([0])
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setPriceRange([0])}
-                >
-                  <Text style={JSON.stringify(priceRange) === JSON.stringify([0]) ? { color: "white" } : null}>Adoption</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    JSON.stringify(priceRange) === JSON.stringify([0, 500])
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setPriceRange([0, 500])}
-                >
-                  <Text style={JSON.stringify(priceRange) === JSON.stringify([0, 500]) ? { color: "white" } : null}>1-500</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    JSON.stringify(priceRange) === JSON.stringify([500, 1000])
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setPriceRange([500, 1000])}
-                >
-                  <Text style={JSON.stringify(priceRange) === JSON.stringify([500, 1000]) ? { color: "white" } : null}>501-1000</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    JSON.stringify(priceRange) === JSON.stringify([1000, 2000])
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setPriceRange([1000, 2000])}
-                >
-                  <Text style={JSON.stringify(priceRange) === JSON.stringify([1000, 2000]) ? { color: "white" } : null}>1001-2000</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={
-                    JSON.stringify(priceRange) === JSON.stringify([2000])
-                      ? [styles.smallBlock, styles.extraStylePressed]
-                      : styles.smallBlock
-                  }
-                  onPress={() => setPriceRange([2000])}
-                >
-                  <Text style={JSON.stringify(priceRange) === JSON.stringify([2000]) ? { color: "white" } : null}>+2000</Text>
-                </TouchableOpacity>
-              </View>
+          <View style={styles.form_view}>
+            <View style={styles.textContainer}>
+              <Text style={styles.form_text}>Tranche de prix </Text>
             </View>
+            <View style={styles.choicesBlock}>
+              <TouchableOpacity
+                style={
+                  priceRange === null
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setPriceRange(null)}
+              >
+                <Text style={!priceRange ? { color: "white" } : null}>Illimité</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  JSON.stringify(priceRange) === JSON.stringify([0])
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setPriceRange([0])}
+              >
+                <Text style={JSON.stringify(priceRange) === JSON.stringify([0]) ? { color: "white" } : null}>Adoption</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  JSON.stringify(priceRange) === JSON.stringify([0, 500])
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setPriceRange([0, 500])}
+              >
+                <Text style={JSON.stringify(priceRange) === JSON.stringify([0, 500]) ? { color: "white" } : null}>1-500</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  JSON.stringify(priceRange) === JSON.stringify([500, 1000])
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setPriceRange([500, 1000])}
+              >
+                <Text style={JSON.stringify(priceRange) === JSON.stringify([500, 1000]) ? { color: "white" } : null}>501-1000</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  JSON.stringify(priceRange) === JSON.stringify([1000, 2000])
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setPriceRange([1000, 2000])}
+              >
+                <Text style={JSON.stringify(priceRange) === JSON.stringify([1000, 2000]) ? { color: "white" } : null}>1001-2000</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={
+                  JSON.stringify(priceRange) === JSON.stringify([2000])
+                    ? [styles.smallBlock, styles.extraStylePressed]
+                    : styles.smallBlock
+                }
+                onPress={() => setPriceRange([2000])}
+              >
+                <Text style={JSON.stringify(priceRange) === JSON.stringify([2000]) ? { color: "white" } : null}>+2000</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
 
-            <View style={styles.form_view}>
-              <View style={styles.textContainer}>
-                <Text style={styles.form_text}>Département </Text>
-              </View>
-              <View style={styles.choicesBlock}>
-                <Picker
-                  style={[styles.picker_style, { marginRight: 50 }]}
-                  selectedValue={department}
-                  onValueChange={(e) => setDepartment(e)}
-                  itemStyle={styles.picker_item}
-                >
-                  <Picker.Item label="Non précisé" value={null} />
-                  {departements.map((item, i) => (
-                    <Picker.Item key={i} label={item} value={item} />
-                  ))}
-                </Picker>
-              </View>
+          <View style={styles.form_view}>
+            <View style={styles.textContainer}>
+              <Text style={styles.form_text}>Département </Text>
             </View>
-            <Button
-              onPress={() => onSubmit()}
-              name="Soumettre"
-              extraStyle={{ margin: 20 }}
-            />
-            <View style={{height: 50}}></View>
-          </React.Fragment>
-        </ScrollView>
-      </View>
+            <View style={styles.choicesBlock}>
+              <Picker
+                style={[styles.picker_style, { marginRight: 50 }]}
+                selectedValue={department}
+                onValueChange={(e) => setDepartment(e)}
+                itemStyle={styles.picker_item}
+              >
+                <Picker.Item label="Non précisé" value={null} />
+                {departements.map((item, i) => (
+                  <Picker.Item key={i} label={item} value={item} />
+                ))}
+              </Picker>
+            </View>
+          </View>
+          <Button
+            onPress={() => onSubmit()}
+            name="Soumettre"
+            extraStyle={{ margin: 20 }}
+          />
+          <View style={{ height: 50 }}></View>
+        </React.Fragment>
+      </ScrollView>
+    </View>
   );
 };
 

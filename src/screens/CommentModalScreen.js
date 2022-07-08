@@ -41,11 +41,12 @@ const AnimalBigScreen = (props) => {
       .then((response) => response.json())
       .then((jsonData) => {
         setLoading(false);
-        if (jsonData.status === 200) setRequestSended(true);
+        if (jsonData.status == 200) setRequestSended(true);
       });
   };
 
   const sendQuestion = () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("animalId", props.route.params.data.id);
     formData.append("animalIsUserid", props.route.params.data._user.id);
@@ -62,7 +63,7 @@ const AnimalBigScreen = (props) => {
       .then((response) => response.json())
       .then((jsonData) => {
         setLoading(false);
-        if (jsonData.status === 200) setRequestSended(true);
+        if (jsonData.status == 200) setRequestSended(true);
       });
   };
 
@@ -75,13 +76,12 @@ const AnimalBigScreen = (props) => {
     <View style={styles.container}>
       <CloseModal navigation={() => props.navigation.goBack(null)} />
       {requestSended ? (
-        <Text style={styles.title}>Formulaire soumis!</Text>
+        <Text style={styles.title}>Transmis !</Text>
       ) : (
         <ScrollView>
           {props.route.params.type === "question" ? (
             <Text style={styles.title}>
-              Posez votre question au propriétaire de
-              {props.route.params.data.name}
+              Posez votre question au propriétaire de {props.route.params.data.name}
             </Text>
           ) : null}
           {props.route.params.type === "answer" ? (
@@ -147,8 +147,6 @@ const AnimalBigScreen = (props) => {
                   <TextInput
                     style={styles.textInput}
                     multiline
-                    numberOfLines={6}
-                    showSoftInputOnFocus={false}
                     onChangeText={(e) => setContent(e)}
                   />
                   <View style={{ marginTop: 40 }}>

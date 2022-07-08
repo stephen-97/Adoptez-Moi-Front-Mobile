@@ -11,6 +11,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 import { COLORS, SIZES, icons } from "../../constants";
 import { tokenDecode, userHaveNewMessages } from "../utility/functions";
@@ -121,7 +122,7 @@ const AccountPageView = (props) => {
   }, [avatar]);
 
   return (
-    <>
+    <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled>
       {!isEmpty(props.DeleteAnimalProps) ? <ConfirmMessage /> : null}
       <ScrollView>
         <View style={styles.block}>
@@ -278,7 +279,7 @@ const AccountPageView = (props) => {
           </View>
         </View>
       </ScrollView>
-    </>
+    </KeyboardAvoidingView>
   );
 };
 

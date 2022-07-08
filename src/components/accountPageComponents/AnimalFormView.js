@@ -11,6 +11,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Picker } from "@react-native-picker/picker";
@@ -165,7 +166,6 @@ const AnimalFormView = (props) => {
       setImageError(true);
     } else {
       setImageError(false);
-      
     }
     if (identificationNumber.length !== 15) {
       setIdNumberError(true);
@@ -207,10 +207,9 @@ const AnimalFormView = (props) => {
         },
         body: formData,
       })
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((jsonData) => {
-          console.log(jsonData);
-          if (jsonData.status === 200) setLoading(false);
+          if (jsonData.status == 200) setLoading(false);
         });
     }
     return null;
@@ -243,7 +242,7 @@ const AnimalFormView = (props) => {
   }, [isVisible]);
 
   return (
-    <>
+    <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column',justifyContent: 'center',}} behavior="padding" enabled keyboardVerticalOffset={100}>
       <ScrollView>
         <Text
           style={styles.backButton}
@@ -253,7 +252,13 @@ const AnimalFormView = (props) => {
         </Text>
         <View style={styles.block}>
           <View style={styles.avisList}>
-            <View style={[styles.avisListTitleBlock, {backgroundColor: props.color}]}>
+            <View
+              style={[
+                styles.avisListTitleBlock,
+                {
+                  backgroundColor: props.color,
+                }]}
+            >
               <Text style={styles.title}>{props.species}</Text>
             </View>
             {!resultData ? (
@@ -262,6 +267,7 @@ const AnimalFormView = (props) => {
                   <Text style={styles.inputTitle}>Nom *</Text>
                   <TextInput
                     placeholder="Nom"
+                    placeholderTextColor={COLORS.placeHolderColor}
                     style={
                       !nameError
                         ? styles.textInput
@@ -283,6 +289,7 @@ const AnimalFormView = (props) => {
                   <View style={styles.ageBlock}>
                     <TextInput
                       placeholder="Age"
+                      placeholderTextColor={COLORS.placeHolderColor}
                       style={
                         !ageError
                           ? styles.textInputAge
@@ -316,6 +323,7 @@ const AnimalFormView = (props) => {
                       </Text>
                       <TextInput
                         placeholder="15 chiffres"
+                        placeholderTextColor={COLORS.placeHolderColor}
                         style={
                           !idNumberError
                             ? styles.textInput
@@ -473,6 +481,7 @@ const AnimalFormView = (props) => {
                   <Text style={styles.inputTitle}>Prix *</Text>
                   <TextInput
                     placeholder="En euro, si l'animal n'est pas à vendre mettez 0"
+                    placeholderTextColor={COLORS.placeHolderColor}
                     style={
                       !priceError
                         ? styles.textInput
@@ -591,7 +600,7 @@ const AnimalFormView = (props) => {
           </View>
         </View>
       </ScrollView>
-    </>
+    </KeyboardAvoidingView>
   );
 };
 

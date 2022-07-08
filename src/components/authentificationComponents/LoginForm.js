@@ -102,6 +102,7 @@ const LoginForm = (props) => {
             <Text style={styles.inputTitle}>Email</Text>
             <TextInput
               placeholder="Votre email"
+              placeholderTextColor={COLORS.placeHolderColor}
               style={userEmpty ? styles.textInputIncorrect : styles.textInput}
               autoCapitalize="none"
               onChangeText={(e) => setUser(e)}
@@ -116,6 +117,7 @@ const LoginForm = (props) => {
             <Text style={styles.inputTitle}>Mot de passe</Text>
             <TextInput
               placeholder="Votre mot de passe"
+              placeholderTextColor={COLORS.placeHolderColor}
               style={
                 passwordEmpty ? styles.textInputIncorrect : styles.textInput
               }

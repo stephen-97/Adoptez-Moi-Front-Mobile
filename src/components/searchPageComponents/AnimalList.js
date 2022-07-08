@@ -173,12 +173,16 @@ const AnimalList2 = (props) => {
         {isloaded ? (
           <>
             <Text>{data.total_count} annonces trouvées</Text>
-            {data.items.map((elem, i) => (
+            {data.items ? (
               <>
-                <AnimalBlock key={i+1} navigation={props.navigation} data={elem}/>
-                <Line key={i-1} color="#00000050" />
+                {data.items.map((elem, i) => (
+                  <>
+                    <AnimalBlock key={i+1} navigation={props.navigation} data={elem}/>
+                    <Line key={i-1} color="#00000050" />
+                  </>
+                ))}
               </>
-            ))}
+            ) : null}
           </>
         ) : null}
       </View>

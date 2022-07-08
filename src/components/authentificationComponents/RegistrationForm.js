@@ -226,6 +226,7 @@ const RegistrationForm = (props) => {
             <Text style={styles.inputTitle}>Email</Text>
             <TextInput
               placeholder="Votre email"
+              placeholderTextColor={COLORS.placeHolderColor}
               style={emailEmpty ? styles.textInputIncorrect : styles.textInput}
               autoCapitalize="none"
               onChangeText={(e) => setEmail(e)}
@@ -240,6 +241,7 @@ const RegistrationForm = (props) => {
             <Text style={styles.inputTitle}>Nom d'utilisateur</Text>
             <TextInput
               placeholder="Votre pseudo"
+              placeholderTextColor={COLORS.placeHolderColor}
               style={
                 usernameEmpty ? styles.textInputIncorrect : styles.textInput
               }
@@ -256,6 +258,7 @@ const RegistrationForm = (props) => {
             <Text style={styles.inputTitle}>Mot de passe</Text>
             <TextInput
               placeholder="Votre mot de passe"
+              placeholderTextColor={COLORS.placeHolderColor}
               style={
                 passwordEmpty || !passwordsEquals
                   ? styles.textInputIncorrect
@@ -274,6 +277,7 @@ const RegistrationForm = (props) => {
             <Text style={styles.inputTitle}>Retappez votre mot de passe</Text>
             <TextInput
               placeholder="Votre mot de passe"
+              placeholderTextColor={COLORS.placeHolderColor}
               style={
                 passwordEmpty || !passwordsEquals
                   ? styles.textInputIncorrect
