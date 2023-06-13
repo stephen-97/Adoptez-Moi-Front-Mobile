@@ -5,8 +5,6 @@
     "name": "avis-R-animaux",
     "slug": "avis-R-animaux",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   }
 }
